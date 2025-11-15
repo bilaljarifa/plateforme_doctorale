@@ -1,0 +1,99 @@
+/* .login-container {
+    @apply min-h-screen flex;
+}
+
+.login-left {
+    @apply w-1/2 bg-white flex flex-col items-center justify-between p-12;
+}
+
+.login-right {
+    @apply w-1/2 bg-[#1a365d] p-12 flex flex-col justify-between relative overflow-hidden;
+}
+
+.uit-logo {
+    @apply w-auto h-24 mb-8;
+}
+
+.welcome-text {
+    @apply text-center space-y-4 mb-8;
+}
+
+.welcome-text-fr {
+    @apply text-2xl font-bold text-gray-900;
+}
+
+.welcome-text-ar {
+    @apply text-2xl font-bold text-gray-800 mt-2;
+}
+
+.instruction-box {
+    @apply bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8;
+}
+
+.instruction-text {
+    @apply text-gray-700 text-base mb-3;
+}
+
+.instruction-text-ar {
+    @apply text-gray-700 text-base text-right;
+}
+
+.google-button {
+    @apply w-full flex items-center justify-center px-6 py-4 border-2 border-blue-600
+           rounded-lg shadow-sm bg-white hover:bg-gray-50 transition-all duration-300
+           transform hover:-translate-y-1;
+}
+
+.google-icon {
+    @apply w-6 h-6 mr-4;
+}
+
+.button-text {
+    @apply text-gray-800 text-lg font-medium;
+}
+
+.help-text {
+    @apply text-center text-sm text-gray-600 mt-8;
+}
+
+.help-link {
+    @apply text-blue-600 hover:text-blue-800 underline;
+}
+
+.right-top-text {
+    @apply text-white text-right mb-12 relative z-10;
+}
+
+.academic-year-ar {
+    @apply text-3xl font-bold mb-2;
+}
+
+.year-number {
+    @apply text-2xl font-light;
+}
+
+.main-text {
+    @apply text-white relative z-10 space-y-6;
+}
+
+.main-text-item {
+    @apply text-5xl font-bold tracking-wide;
+}
+
+.decorative-pattern {
+    @apply absolute inset-0 opacity-10;
+}
+
+.pattern-animation {
+    animation: float 20s ease-in-out infinite;
+    transform-origin: center;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-30px) rotate(5deg);
+    }
+} */
