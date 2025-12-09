@@ -11,6 +11,8 @@ class Article extends Model
         'user_id',
         'type',
         'titre',
+        'auteurs',
+        'revue',
         'annee',
         'lien',
         'doi'

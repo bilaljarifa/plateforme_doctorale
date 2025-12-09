@@ -25,10 +25,30 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/articles', [App\Http\Controllers\ArticleController::class, 'index'])->name('articles.index');
     Route::get('/articles/create', [App\Http\Controllers\ArticleController::class, 'create'])->name('articles.create');
     Route::post('/articles', [App\Http\Controllers\ArticleController::class, 'store'])->name('articles.store');
+    Route::post('/articles/import-orcid', [App\Http\Controllers\ArticleController::class, 'importOrcid'])->name('articles.import-orcid');
     Route::get('/articles/export/pdf', [ArticleExportController::class, 'pdf'])->name('articles.export.pdf');
     Route::get('/articles/{article}/edit', [App\Http\Controllers\ArticleController::class, 'edit'])->name('articles.edit');
     Route::put('/articles/{article}', [App\Http\Controllers\ArticleController::class, 'update'])->name('articles.update');
     Route::delete('/articles/{article}', [App\Http\Controllers\ArticleController::class, 'destroy'])->name('articles.destroy');
+
+    // Routes pour les communications (utilise le même modèle Article mais affichage sans 'type')
+    Route::get('/communications', function () {
+        return view('communications.index');
+    })->name('communications.index');
+
+    // Création et stockage pour les communications (type forcé côté serveur)
+    Route::get('/communications/create', [App\Http\Controllers\CommunicationController::class, 'create'])->name('communications.create');
+    Route::post('/communications', [App\Http\Controllers\CommunicationController::class, 'store'])->name('communications.store');
+    Route::get('/communications/{communication}/edit', [App\Http\Controllers\CommunicationController::class, 'edit'])->name('communications.edit');
+    Route::put('/communications/{communication}', [App\Http\Controllers\CommunicationController::class, 'update'])->name('communications.update');
+    Route::delete('/communications/{communication}', [App\Http\Controllers\CommunicationController::class, 'destroy'])->name('communications.destroy');
+
+    // Réinscription
+    Route::get('/reinscription', [App\Http\Controllers\ReinscriptionController::class, 'index'])->name('reinscription.index');
+    Route::post('/reinscription', [App\Http\Controllers\ReinscriptionController::class, 'store'])->name('reinscription.store');
+    Route::post('/reinscription/confirm', [App\Http\Controllers\ReinscriptionController::class, 'confirm'])->name('reinscription.confirm');
+    Route::get('/reinscription/{reinscription_id}/download-receipt', [App\Http\Controllers\ReinscriptionController::class, 'downloadReceipt'])->name('reinscription.download-receipt');
+    Route::get('/articles/count', [App\Http\Controllers\ReinscriptionController::class, 'articleCount'])->name('articles.count');
 });
 
 // Route pour la page thèse

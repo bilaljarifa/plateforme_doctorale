@@ -16,7 +16,14 @@
     </style>
 
     <!-- LEFT COLUMN -->
-    <div class="md:w-1/2 w-full bg-white flex flex-col justify-center p-10 sm:p-16 space-y-10 animate-slide-up">
+    <div class="md:w-1/2 w-full bg-white flex flex-col justify-center p-10 sm:p-16 space-y-8 animate-slide-up">
+
+        <!-- Error Message -->
+        @if(session('error'))
+            <div class="bg-red-50 border-l-4 border-red-400 p-4 mb-4">
+                <p class="text-red-700 text-sm">{{ session('error') }}</p>
+            </div>
+        @endif
 
         <!-- University Logo -->
         <div class="text-center">
@@ -25,45 +32,61 @@
             <p class="text-gray-700 text-lg" dir="rtl">جامعة ابن طفيل</p>
         </div>
 
-        <!-- Main Box -->
-        <div class="max-w-md mx-auto w-full bg-white rounded-2xl shadow-lg p-8 hover:shadow-2xl transition-all duration-500">
-            <h2 class="text-center text-3xl font-bold text-blue-800 mb-2">
+        <!-- Title -->
+        <div class="text-center max-w-lg mx-auto">
+            <h2 class="text-3xl font-bold text-blue-800 mb-2">
                 Cycle Doctoral 2025-2026
             </h2>
-            <h3 class="text-center text-2xl font-bold text-blue-700 mb-6" dir="rtl">
+            <h3 class="text-2xl font-bold text-blue-700 mb-6" dir="rtl">
                 دكتوراه 2025-2026
             </h3>
 
+            <!-- Welcome Message -->
+            <div class="mb-6">
+                <p class="text-gray-700 text-sm leading-relaxed mb-2">
+                    Bienvenue sur la plateforme de suivi de candidature en 
+                    <span class="text-blue-600 font-medium">cycle doctoral</span> au titre de l'année universitaire 2025-2026
+                </p>
+                <p class="text-gray-700 text-sm leading-relaxed" dir="rtl">
+                    مرحبا بكم في منصة تتبع الترشيح 
+                    <span class="text-blue-600 font-medium">لسلك الدكتوراه</span> 
+                    برسم السنة الجامعية 2026-2025
+                </p>
+            </div>
+
             <!-- Info Box -->
-            <div class="bg-blue-50 border border-blue-100 rounded-xl p-5 mb-8 text-center">
-                <p class="text-gray-700 text-sm">Connexion via Gmail professionnel obligatoire.</p>
-                <p class="text-gray-700 text-sm" dir="rtl">تسجيل الدخول عبر البريد الإلكتروني المهني إلزامي.</p>
+            <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6 text-left">
+                <p class="text-gray-700 text-sm mb-1">
+                    La connexion via gmail personnel du <span class="text-blue-600 font-medium">candidat</span> est obligatoire.
+                </p>
+                <p class="text-gray-700 text-sm" dir="rtl">
+                    تسجيل الدخول إلى البريد الإلكتروني الشخصي لـ<span class="text-blue-600 font-medium">المترشح</span> يعد إلزامي.
+                </p>
             </div>
 
             <!-- Google Login -->
-            <div class="text-center">
+            <div class="mb-6">
                 <a href="{{ route('google.login') }}"
-                   class="group flex items-center justify-center gap-3 px-6 py-3 rounded-xl border-2 border-blue-600 bg-white hover:bg-blue-50 hover:shadow-lg hover:border-blue-700 transition-all duration-300">
-                    <svg class="h-6 w-6 group-hover:rotate-12 transition-transform duration-300"
-                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                   class="group inline-flex items-center justify-center gap-3 px-6 py-3 rounded-lg border border-gray-300 bg-white hover:bg-gray-50 hover:shadow-md transition-all duration-300">
+                    <svg class="h-5 w-5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path fill="#4285F4"
                               d="M12.24 10.285V14.4h6.806c-.275 1.765-2.056 5.174-6.806 5.174-4.095 0-7.439-3.389-7.439-7.574s3.345-7.574 7.439-7.574c2.33 0 3.891.989 4.785 1.849l3.254-3.138C18.189 1.186 15.479 0 12.24 0c-6.635 0-12 5.365-12 12s5.365 12 12 12c6.926 0 11.52-4.869 11.52-11.726 0-.788-.085-1.39-.189-1.989H12.24z" />
                     </svg>
-                    <span class="text-lg font-semibold text-gray-800 group-hover:text-blue-700">
+                    <span class="text-base font-medium text-gray-700">
                         Connexion avec Google
                     </span>
                 </a>
             </div>
-        </div>
 
-        <!-- Support -->
-        <div class="text-center">
-            <p class="text-sm text-gray-600">
-                Besoin d'aide ?
-                <a href="mailto:support@uit.ac.ma" class="text-blue-600 hover:underline">
-                    support@uit.ac.ma
-                </a>
-            </p>
+            <!-- Support -->
+            <div>
+                <p class="text-sm text-gray-600">
+                    Besoin d'aide ?
+                    <a href="mailto:support@uit.ac.ma" class="text-blue-600 hover:underline">
+                        support@uit.ac.ma
+                    </a>
+                </p>
+            </div>
         </div>
     </div>
 

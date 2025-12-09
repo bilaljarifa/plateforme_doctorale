@@ -24,22 +24,31 @@ class GoogleController extends Controller
 
             if ($finduser) {
                 Auth::login($finduser);
+                session()->regenerate();
                 // Redirection directe au dashboard après connexion
-                return redirect('/dashboard');
+                return redirect()->route('dashboard');
             } else {
+                // Split the Google display name into first and last name
+                $nameParts = explode(' ', $user->name, 2);
+                $prenom = $nameParts[0] ?? ''; // First name
+                $nom = $nameParts[1] ?? $nameParts[0]; // Last name, or full name if no space
+                
                 $newUser = User::create([
-                    'name' => $user->name,
+                    'name' => $nom,
+                    'prenom' => $prenom,
                     'email' => $user->email,
                     'google_id' => $user->id,
                     'password' => bcrypt(Str::random(16))
                 ]);
 
                 Auth::login($newUser);
+                session()->regenerate();
                 // Redirection directe au dashboard après connexion
-                return redirect('/dashboard');
+                return redirect()->route('dashboard');
             }
         } catch (Exception $e) {
-            return redirect('/login')->with('error', 'Une erreur est survenue lors de la connexion avec Google');
+            \Log::error('Google Login Error: ' . $e->getMessage());
+            return redirect('/login')->with('error', 'Une erreur est survenue lors de la connexion avec Google: ' . $e->getMessage());
         }
     }
 }

@@ -54,18 +54,18 @@ class UserProfile extends Component
     {
         $this->validate([
             'nom_fr' => 'required|string|max:255',
-            'prenom_fr' => 'nullable|string|max:255',
+            'prenom_fr' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,' . auth()->id(),
-            'cin' => 'nullable|string|max:20',
-            'cne' => 'nullable|string|max:20',
-            'nom_arabe' => 'nullable|string|max:255',
-            'prenom_arabe' => 'nullable|string|max:255',
-            'genre' => 'nullable|in:Homme,Femme',
-            'date_naissance' => 'nullable|date',
-            'situation_familiale' => 'nullable|in:Célibataire,Marié(e),Divorcé(e),Veuf(ve)',
-            'situation_administrative' => 'nullable|in:Fonctionnaire,Salarié,Sans emploi',
-            'orcid' => 'nullable|string|max:255',
-            'telephone' => 'nullable|string|max:20',
+            'cin' => 'required|string|max:20',
+            'cne' => 'required|string|max:20',
+            'nom_arabe' => 'required|string|max:255',
+            'prenom_arabe' => 'required|string|max:255',
+            'genre' => 'required|in:Homme,Femme',
+            'date_naissance' => 'required|date',
+            'situation_familiale' => 'required|in:Célibataire,Marié(e),Divorcé(e),Veuf(ve)',
+            'situation_administrative' => 'required|in:Fonctionnaire,Salarié,Sans emploi',
+            'orcid' => 'required|string|max:255',
+            'telephone' => 'required|string|max:20',
         ]);
 
         // Mettre à jour l'utilisateur

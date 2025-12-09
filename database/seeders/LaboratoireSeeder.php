@@ -10,19 +10,29 @@ class LaboratoireSeeder extends Seeder
 {
     public function run()
     {
-        $etab = Etablissement::first();
-        if (!$etab) {
+        $etabs = Etablissement::all();
+        if ($etabs->isEmpty()) {
             return;
         }
 
-        Laboratoire::create([
-            'intitule' => 'Laboratoire de Mathématiques',
-            'etablissement_id' => $etab->id,
-        ]);
+        $laboratories = [
+            'Laboratoire de Mathématiques et Applications',
+            'Laboratoire d\'Informatique et Systèmes',
+            'Laboratoire de Physique de la Matière Condensée',
+            'Laboratoire de Chimie Organique et Analytique',
+            'Laboratoire de Biologie et Santé',
+            'Laboratoire de Génie Électrique et Énergies Renouvelables',
+            'Laboratoire d\'Économie et Gestion',
+            'Laboratoire de Sciences de l\'Éducation',
+        ];
 
-        Laboratoire::create([
-            'intitule' => 'Laboratoire d\'Informatique',
-            'etablissement_id' => $etab->id,
-        ]);
+        foreach ($laboratories as $index => $labName) {
+            // Distribute across available establishments
+            $etabIndex = $index % $etabs->count();
+            Laboratoire::create([
+                'intitule' => $labName,
+                'etablissement_id' => $etabs[$etabIndex]->id,
+            ]);
+        }
     }
 }

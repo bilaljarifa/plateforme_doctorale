@@ -26,6 +26,16 @@ class User extends Authenticatable
     }
 
     /**
+     * Relation with the current thesis (These).
+     *
+     * Some controllers expect a `these` relation on the User model.
+     */
+    public function these()
+    {
+        return $this->hasOne(These::class);
+    }
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>

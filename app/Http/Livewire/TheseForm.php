@@ -111,7 +111,14 @@ class TheseForm extends Component
             $dirInput = trim($this->these['directeur_these']);
             if ($dirInput !== '') {
                 if (is_numeric($dirInput)) {
-                    $directeurId = (int) $dirInput;
+                    $dirId = (int) $dirInput;
+                    // Verify the professor exists
+                    $existingProf = Prof::find($dirId);
+                    if ($existingProf) {
+                        $directeurId = $dirId;
+                    } else {
+                        throw new \Exception("Le directeur de thèse sélectionné n'existe pas (ID: {$dirId})");
+                    }
                 } else {
                     // store full name into nom_fr if no split available
                     $prof = Prof::firstOrCreate([
@@ -161,13 +168,32 @@ class TheseForm extends Component
             ]);
 
             DB::commit();
-            session()->flash('success', 'Thèse enregistrée avec succès !');
+            session()->flash('success', 'Thèse enregistrée avec succès ! / تم تسجيل الأطروحة بنجاح!');
             $this->dispatchBrowserEvent('theseSaved', ['message' => 'Thèse enregistrée avec succès !']);
+        } catch (\Illuminate\Database\QueryException $e) {
+            DB::rollBack();
+            
+            // Handle foreign key constraint violations
+            if (str_contains($e->getMessage(), 'foreign key constraint')) {
+                $errorMessage = 'Erreur: Veuillez vérifier que tous les professeurs, laboratoires et établissements sélectionnés existent. / خطأ: يرجى التحقق من وجود جميع الأساتذة والمختبرات والمؤسسات المحددة.';
+            } 
+            // Handle NOT NULL violations
+            elseif (str_contains($e->getMessage(), 'cannot be null')) {
+                $errorMessage = 'Erreur: Tous les champs obligatoires doivent être remplis. / خطأ: يجب ملء جميع الحقول المطلوبة.';
+            }
+            // Generic database error
+            else {
+                $errorMessage = 'Erreur lors de la sauvegarde. Veuillez réessayer. / خطأ أثناء الحفظ. يرجى المحاولة مرة أخرى.';
+            }
+            
+            session()->flash('error', $errorMessage);
+            $this->dispatchBrowserEvent('theseError', ['message' => $errorMessage]);
         } catch (\Exception $e) {
             DB::rollBack();
-            session()->flash('error', 'Erreur lors de la sauvegarde : ' . $e->getMessage());
-            $this->dispatchBrowserEvent('theseError', ['message' => 'Erreur lors de la sauvegarde : ' . $e->getMessage()]);
-            throw $e;
+            
+            $errorMessage = 'Une erreur inattendue s\'est produite. Veuillez contacter l\'administrateur. / حدث خطأ غير متوقع. يرجى الاتصال بالم administrator.';
+            session()->flash('error', $errorMessage);
+            $this->dispatchBrowserEvent('theseError', ['message' => $errorMessage]);
         }
     }
 

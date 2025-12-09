@@ -66,6 +66,18 @@ class ArticleController extends Controller
             ->with('success', 'Article modifié avec succès');
     }
 
+    public function importOrcid(Request $request)
+    {
+        $validated = $request->validate([
+            'orcid_id' => 'required|string|regex:/^\d{4}-\d{4}-\d{4}-\d{4}$/',
+        ]);
+
+        // TODO: Implement ORCID API integration
+        // For now, just redirect back with a message
+        return redirect()->route('articles.index')
+            ->with('info', 'La fonctionnalité d\'importation ORCID sera bientôt disponible.');
+    }
+
     public function destroy(Article $article)
     {
         // Vérifier que l'article appartient à l'utilisateur connecté

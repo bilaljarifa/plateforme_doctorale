@@ -1,162 +1,326 @@
-<!-- Professional Navigation Component -->
-<nav class="navbar navbar-expand-lg navbar-light bg-primary shadow-lg">
-    <div class="container-fluid">
-        <!-- Logo -->
-        <a class="navbar-brand text-white fw-bold" href="{{ route('dashboard') }}">
-            <svg class="d-inline-block align-text-top me-2" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="2" y="2" width="8" height="8" rx="2" fill="currentColor"/>
-                <rect x="14" y="2" width="8" height="8" rx="2" fill="currentColor" opacity="0.7"/>
-                <rect x="2" y="14" width="8" height="8" rx="2" fill="currentColor" opacity="0.7"/>
-                <rect x="14" y="14" width="8" height="8" rx="2" fill="currentColor"/>
-            </svg>
-            UIT Portal
-        </a>
+<!-- Clean Professional Navbar -->
+<nav class="phd-main-navbar fixed-top">
+    <div class="container-fluid px-4">
+        <div class="navbar-layout">
+            <!-- Left: PhD-MS Logo -->
+            <div class="navbar-left">
+                <a href="{{ auth()->check() ? route('dashboard') : route('login') }}" class="brand-link">
+                    <i class="bi bi-mortarboard-fill"></i>
+                    <span class="brand-text">PhD-MS</span>
+                </a>
+            </div>
 
-        <!-- Toggle Button -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+            <!-- Center: Doctoral Cycle Info -->
+            <div class="navbar-center">
+                <div class="cycle-name">{{ __('messages.doctoral_cycle') }}</div>
+            </div>
 
-        <!-- Navigation Items -->
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                @auth
-                    <!-- Dashboard Link -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('dashboard') }}">
-                            <i class="bi bi-house-fill me-2"></i>Dashboard
-                        </a>
-                    </li>
-
-                    <!-- Articles Link -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('articles.index') }}">
-                            <i class="bi bi-file-earmark me-2"></i>Articles
-                        </a>
-                    </li>
-
-                    <!-- Thèse Link -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('these') }}">
-                            <i class="bi bi-book me-2"></i>Thèse
-                        </a>
-                    </li>
-
-                    <!-- Profile Dropdown -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarProfile" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-person-circle me-2"></i>{{ Auth::user()->name }}
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarProfile">
-                            <li><a class="dropdown-item" href="{{ route('profile.update') }}">
-                                <i class="bi bi-gear me-2"></i>Profil
-                            </a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <form method="POST" action="{{ route('logout') }}" style="display: inline;">
-                                    @csrf
-                                    <button type="submit" class="dropdown-item text-danger" style="border: none; background: none; cursor: pointer;">
-                                        <i class="bi bi-box-arrow-right me-2"></i>Déconnexion
-                                    </button>
-                                </form>
-                            </li>
-                        </ul>
-                    </li>
-                @else
-                    <!-- Login Button -->
-                    <li class="nav-item">
-                        <a class="btn btn-light btn-sm ms-2 text-primary fw-bold" href="{{ route('login') }}">
-                            <i class="bi bi-box-arrow-in-right me-1"></i>Connexion
-                        </a>
-                    </li>
-                @endauth
-
-                <!-- Language Selector -->
-                <li class="nav-item dropdown ms-2">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarLanguage" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-globe me-1"></i>Langue
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarLanguage">
-                        <li><a class="dropdown-item" href="{{ route('language.switch', 'fr') }}">
-                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 600'%3E%3Crect fill='%23002395' width='900' height='600'/%3E%3Crect fill='%23FFF' x='300' width='300' height='600'/%3E%3Crect fill='%23ED2939' x='600' width='300' height='600'/%3E%3C/svg%3E" width="20" class="me-2" alt="FR"> Français
-                        </a></li>
-                        <li><a class="dropdown-item" href="{{ route('language.switch', 'ar') }}">
-                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 600'%3E%3Crect fill='%23CE1126' width='300' height='600'/%3E%3Crect fill='%23FFF' x='300' width='300' height='600'/%3E%3Crect fill='%23007A5E' x='600' width='300' height='600'/%3E%3C/svg%3E" width="20" class="me-2" alt="AR"> العربية
-                        </a></li>
-                        <li><a class="dropdown-item" href="{{ route('language.switch', 'en') }}">
-                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 30'%3E%3CclipPath id='s'%3E%3Cpath d='M0,0 v30 h60 v-30 z'/%3E%3C/clipPath%3E%3CclipPath id='t'%3E%3Cpath d='M30,15 h30 v15 z v-15 h-30 z h-30 v-15 z v15 h30 z'/%3E%3C/clipPath%3E%3Cpath d='M0,0 v30 h60 v-30 z' fill='%23012169'/%3E%3Cpath d='M0,0 L60,30 M60,0 L0,30' stroke='%23fff' stroke-width='6' clip-path='url(%23s)'/%3E%3Cpath d='M0,0 L60,30 M60,0 L0,30' stroke='%23c8102e' stroke-width='4' clip-path='url(%23t)'/%3E%3Cpath d='M30,0 v30 M0,15 h60' stroke='%23fff' stroke-width='10'/%3E%3Cpath d='M30,0 v30 M0,15 h60' stroke='%23c8102e' stroke-width='6'/%3E%3C/svg%3E" width="20" class="me-2" alt="EN"> English
-                        </a></li>
-                    </ul>
-                </li>
-            </ul>
+            <!-- Right: Ministry Logo & Language -->
+            <div class="navbar-right">
+                <img src="{{ asset('images/ministry-logo-new.png') }}" alt="Ministry Logo" class="ministry-logo">
+                
+                <div class="language-dropdown" id="languageDropdown">
+                    <button class="language-btn" type="button" id="languageBtn" onclick="toggleLanguageMenu(event)">
+                        <i class="bi bi-globe"></i>
+                        {{ app()->getLocale() === 'fr' ? 'FR' : (app()->getLocale() === 'ar' ? 'AR' : 'EN') }}
+                        <i class="bi bi-chevron-down" style="font-size: 0.7rem; margin-left: 0.2rem;"></i>
+                    </button>
+                    <div id="languageMenu" class="language-menu">
+                        <a class="language-item" href="{{ route('language.switch', 'fr') }}">🇫🇷 Français</a>
+                        <a class="language-item" href="{{ route('language.switch', 'ar') }}">🇲🇦 العربية</a>
+                        <a class="language-item" href="{{ route('language.switch', 'en') }}">🇬🇧 English</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </nav>
 
 <style>
-.navbar {
-    padding: 1rem 0;
+/* Clean Professional Navbar */
+.phd-main-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #050372;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    z-index: 1030;
+    padding: 0.75rem 0;
 }
 
-.navbar-brand {
-    font-size: 1.4rem;
-    font-weight: 700;
-    letter-spacing: 1px;
+.navbar-layout {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+}
+
+/* Left: Brand */
+.navbar-left {
+    flex: 0 0 auto;
+}
+
+.brand-link {
     display: flex;
     align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: white;
 }
 
-.nav-link {
-    color: rgba(255, 255, 255, 0.9) !important;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    margin: 0 0.5rem;
-    border-bottom: 2px solid transparent;
-    padding-bottom: 0.25rem !important;
+.brand-link i {
+    font-size: 1.5rem;
 }
 
-.nav-link:hover {
-    color: #fff !important;
-    border-bottom-color: #fff;
+.brand-text {
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
 }
 
-.dropdown-menu {
-    background-color: #f8f9fa;
-    border: none;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+/* Center: Doctoral Cycle */
+.navbar-center {
+    flex: 1;
+    text-align: center;
+}
+
+.cycle-name {
+    color: white;
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: 0.5px;
+}
+
+.cycle-name-ar {
+    color: rgba(255,255,255,0.95);
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-top: 0.1rem;
+}
+
+/* Right: Logo & Language */
+.navbar-right {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.ministry-logo {
+    height: 45px;
+    width: auto;
+}
+
+/* Language Button */
+.language-dropdown {
+    position: relative;
+}
+
+.language-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.4rem 0.75rem;
+    background: white;
+    color: #050372;
+    border: 2px solid rgba(255, 255, 255, 0.2);
     border-radius: 6px;
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-.dropdown-item {
-    color: #333;
-    transition: all 0.2s ease;
+.language-btn:hover {
+    background: #f8f9ff;
+    border-color: #050372;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(5, 3, 114, 0.2);
 }
 
-.dropdown-item:hover {
-    background-color: #e9ecef;
-    color: #0066cc;
+.language-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(5, 3, 114, 0.15);
 }
 
-.bg-primary {
-    background: linear-gradient(90deg, #0066cc 0%, #0052a3 100%) !important;
+.language-btn i {
+    font-size: 0.85rem;
+    color: #050372;
 }
 
-.btn-light {
-    background-color: #fff !important;
-    border: none;
+.language-btn i.bi-chevron-down {
+    font-size: 0.6rem;
+    transition: transform 0.3s ease;
 }
 
-.btn-light:hover {
-    background-color: #f0f0f0 !important;
+.language-dropdown.active .language-btn i.bi-chevron-down {
+    transform: rotate(180deg);
+}
+
+/* Language Menu Dropdown */
+.language-menu {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 0.5rem);
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    min-width: 150px;
+    z-index: 9999;
+    overflow: hidden;
+    display: none;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.language-menu.show {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.language-item {
+    display: block;
+    padding: 0.6rem 1rem;
+    color: #111827 !important;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: all 0.2s;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.language-item:last-child {
+    border-bottom: none;
+}
+
+.language-item:hover {
+    background: #eff6ff;
+    color: #050372 !important;
+    padding-left: 1.25rem;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .navbar-center {
+        display: none;
+    }
 }
 
 @media (max-width: 768px) {
-    .navbar-brand {
+    .brand-text {
         font-size: 1.2rem;
     }
+    
+    .ministry-logo {
+        height: 35px;
+    }
+    
+    .language-btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+    }
+}
 
-    .nav-link {
-        margin: 0.5rem 0;
+@media (max-width: 576px) {
+    .phd-main-navbar {
+        padding: 0.5rem 0;
+    }
+    
+    .navbar-layout {
+        gap: 1rem;
+    }
+    
+    .brand-link i {
+        font-size: 1.2rem;
+    }
+    
+    .brand-text {
+        font-size: 1rem;
+    }
+    
+    .ministry-logo {
+        height: 30px;
+    }
+    
+    .language-btn {
+        padding: 0.3rem 0.6rem;
+        font-size: 0.75rem;
+    }
+    
+    .navbar-right {
+        gap: 1rem;
+    }
+}
+
+/* Body padding */
+body {
+    padding-top: 80px !important;
+}
+
+@media (max-width: 768px) {
+    body {
+        padding-top: 70px !important;
     }
 }
 </style>
+
+<script>
+// Wait for DOM to be fully loaded
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Language dropdown script loaded');
+    
+    // Verify elements exist
+    const languageBtn = document.getElementById('languageBtn');
+    const languageMenu = document.getElementById('languageMenu');
+    const languageDropdown = document.getElementById('languageDropdown');
+    
+    console.log('Language button:', languageBtn);
+    console.log('Language menu:', languageMenu);
+    console.log('Language dropdown:', languageDropdown);
+    
+    if (!languageBtn || !languageMenu) {
+        console.error('Language elements not found!');
+        return;
+    }
+});
+
+function toggleLanguageMenu(event) {
+    event.stopPropagation();
+    console.log('Toggle menu clicked');
+    
+    const menu = document.getElementById('languageMenu');
+    if (menu) {
+        menu.classList.toggle('show');
+        console.log('Menu toggled. Has show class:', menu.classList.contains('show'));
+    } else {
+        console.error('Menu element not found!');
+    }
+}
+
+// Close menu when clicking outside
+document.addEventListener('click', function(event) {
+    const dropdown = document.getElementById('languageDropdown');
+    const menu = document.getElementById('languageMenu');
+    
+    if (dropdown && menu && !dropdown.contains(event.target)) {
+        menu.classList.remove('show');
+    }
+});
+
+// Close menu on escape key
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        const menu = document.getElementById('languageMenu');
+        if (menu) {
+            menu.classList.remove('show');
+        }
+    }
+});
+</script>

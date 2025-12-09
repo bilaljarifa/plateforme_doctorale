@@ -9,7 +9,7 @@ class LanguageController extends Controller
     public function switchLanguage($locale)
     {
         // Vérifier si la langue est supportée
-        if (!in_array($locale, ['en', 'fr'])) {
+        if (!in_array($locale, ['en', 'fr', 'ar'])) {
             abort(400);
         }
 
