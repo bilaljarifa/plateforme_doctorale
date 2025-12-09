@@ -1,66 +1,267 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Plateforme Doctorale
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A comprehensive web-based management system for PhD students (doctorants) built with Laravel 9 and Livewire.
 
-## About Laravel
+## Overview
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+**Plateforme Doctorale** enables PhD students to:
+- Manage their academic profile with bilingual support (French/Arabic)
+- Track thesis information with supervisor and laboratory details
+- Publish and manage research articles and conference communications
+- Submit annual re-inscriptions with automated PDF receipt generation
+- Switch between French and English interface languages
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Technology Stack
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Framework**: Laravel 9.52.21
+- **PHP**: 8.0.30
+- **Database**: MySQL
+- **Frontend**: Livewire 2.x for reactive components
+- **PDF Generation**: DomPDF (barryvdh/laravel-dompdf)
+- **Authentication**: Laravel Sanctum + Google OAuth (Laravel Socialite)
+- **UI Components**: PowerGrid for data tables
 
-## Learning Laravel
+## Features
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 🔐 Authentication
+- Google OAuth integration (single sign-on)
+- Traditional email/password authentication
+- Secure session management
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### 👤 User Profile Management
+- Personal information (CIN, CNE, birth date, gender)
+- Bilingual name support (French and Arabic)
+- ORCID integration for researchers
+- Contact information
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 🎓 Thesis Management
+- Complete academic structure (CED, PED, institutions, laboratories)
+- Supervisor and co-supervisor tracking
+- Research topic management
+- Defense timeline tracking
 
-## Laravel Sponsors
+### 📄 Publications
+- **Articles**: Research papers, conference proceedings, book chapters
+- **Communications**: Conference presentations and talks
+- CRUD operations with validation
+- DOI and URL linking
+- Export to PDF
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+### 📋 Re-inscription System
+- Annual re-enrollment workflow
+- Activity report upload (PDF)
+- Thesis progress description
+- Automatic PDF receipt generation
+- Smart caching for fast downloads
 
-### Premium Partners
+### 🌍 Bilingual Support
+- French and English interface
+- Easy language switching
+- All key features translated
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+## Installation
+
+### Prerequisites
+
+- PHP 8.0 or higher
+- Composer 2.x
+- MySQL 5.7 or higher
+- Node.js and NPM
+
+### Setup Steps
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd Plateforme-Doctorale
+   ```
+
+2. **Install dependencies**
+   ```bash
+   composer install
+   npm install
+   ```
+
+3. **Environment configuration**
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+
+4. **Database configuration**
+   
+   Edit `.env` file:
+   ```env
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=plateforme_doctorale
+   DB_USERNAME=root
+   DB_PASSWORD=your_password
+   ```
+
+5. **Run migrations**
+   ```bash
+   php artisan migrate
+   ```
+
+6. **Create storage symlink**
+   ```bash
+   php artisan storage:link
+   ```
+
+7. **Compile assets**
+   ```bash
+   npm run dev
+   ```
+
+8. **Start development server**
+   ```bash
+   php artisan serve
+   ```
+
+9. **Access the application**
+   
+   Open your browser and navigate to: `http://localhost:8000`
+
+## Google OAuth Setup
+
+To enable Google login:
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com)
+2. Create a new project (or select existing)
+3. Enable Google+ API
+4. Create OAuth 2.0 credentials
+5. Add authorized redirect URI: `http://localhost:8000/auth/google/callback`
+6. Copy Client ID and Client Secret
+
+Update `.env`:
+```env
+GOOGLE_CLIENT_ID=your_client_id
+GOOGLE_CLIENT_SECRET=your_client_secret
+GOOGLE_REDIRECT_URL=http://localhost:8000/auth/google/callback
+```
+
+## Database Schema
+
+The application uses 12 main tables:
+
+### Core Tables
+- `users` - User authentication and basic information
+- `doctorant_profiles` - Extended PhD student profiles
+- `theses` - Thesis information with academic relationships
+- `articles` - Published research articles
+- `communications` - Conference presentations
+- `reinscriptions` - Annual re-enrollment records
+
+### Reference Tables
+- `peds` - Doctoral Study Programs
+- `ceds` - Doctoral Study Centers
+- `etablissements` - Academic Institutions
+- `laboratoires` - Research Laboratories
+- `profs` - Professors/Supervisors
+- `sujets` - Research Topics
+
+For detailed schema documentation, see the Database Schema section in the full documentation.
+
+## Key Components
+
+### Models
+All models use Eloquent ORM with proper relationships:
+- `User` - Has many articles, communications, one thesis, one profile
+- `These` - Belongs to user, CED, PED, professor, laboratory, etc.
+- `Article` & `Communication` - Belong to user
+- `Reinscription` - Belongs to user with PDF receipt
+
+### Controllers
+- `ReinscriptionController` - Complete re-inscription workflow
+- `ArticleController` - Article CRUD operations
+- `CommunicationController` - Communication management
+- `Auth\GoogleController` - Google OAuth authentication
+- `DashboardController` - Main dashboard display
+- `LanguageController` - Language switching
+
+### Livewire Components
+- `TheseForm` - Interactive thesis information form with auto-complete
+- `UserProfile` - Real-time profile editor with validation
+- `ArticleTable` - PowerGrid data table for articles
+- `CommunicationTable` - PowerGrid data table for communications
+
+## Security Features
+
+- CSRF protection on all forms
+- XSS prevention with Blade auto-escaping
+- SQL injection prevention with Eloquent ORM
+- Password hashing with bcrypt
+- Authorization checks on all CRUD operations
+- Session regeneration on authentication
+
+## File Storage
+
+Files are stored in `storage/app/public/`:
+- Re-inscription reports: `reinscriptions/`
+- PDF receipts: `reinscriptions/receipts/`
+
+Access via: `http://localhost:8000/storage/path/to/file`
+
+## Testing
+
+Run the test suite:
+```bash
+php artisan test
+```
+
+## Project Structure
+
+```
+Plateforme Doctorale/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/      # HTTP Controllers
+│   │   └── Livewire/         # Livewire Components
+│   ├── Models/               # Eloquent Models
+│   └── Providers/
+├── database/
+│   ├── migrations/           # Database Migrations
+│   └── seeders/
+├── resources/
+│   ├── views/                # Blade Templates
+│   └── lang/                 # Translations (fr, en)
+├── routes/
+│   └── web.php              # Web Routes
+└── storage/
+    └── app/public/          # File Storage
+```
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+This project follows Laravel best practices:
+- PSR-12 coding standards
+- Proper MVC separation
+- Eloquent relationships
+- Request validation
+- Resource controllers
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+[Your License Here]
+
+## Support
+
+For issues, questions, or contributions, please contact [Your Contact Info]
+
+## Changelog
+
+### Version 2.0 (Current)
+- Added re-inscription module with PDF receipt generation
+- Implemented communications management
+- Enhanced bilingual support
+- Added Google OAuth authentication
+- Improved UI with responsive design
+- Database schema optimization
+
+### Version 1.0
+- Initial release
+- Basic user management
+- Thesis tracking
+- Article management
