@@ -55,4 +55,9 @@ class These extends Model
     {
         return $this->belongsTo(Sujet::class);
     }
+
+    public function coDirecteur()
+    {
+        return $this->belongsTo(Prof::class, 'co_directeur_nom_complet');
+    }
 }

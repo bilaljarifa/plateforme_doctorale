@@ -4,131 +4,116 @@
 <div class="reinscription-container">
     <div class="py-4">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <!-- Page Header (compact) -->
-            <div class="mb-6 text-center">
-                <h1 class="text-2xl font-semibold text-gray-900">Réinscription au Doctorat || إعادة التسجيل في الدكتوراه</h1>
-                <p class="text-sm text-gray-500 mt-1">Année Universitaire: {{ date('Y') }}-{{ date('Y') + 1 }}</p>
+            <!-- Completeness Check Logic -->
+            <div id="completeness-status" 
+                 data-profile="{{ $isProfileComplete ? '1' : '0' }}" 
+                 data-these="{{ $isTheseComplete ? '1' : '0' }}"
+                 class="hidden">
             </div>
 
-            <!-- TWO COLUMN LAYOUT: Zone A (Left) + Zone B (Right) -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- TWO COLUMN LAYOUT -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-                <!-- ZONE A: Fixed Information (Left Column) -->
-                <div class="space-y-4">
-                    <h2 class="text-lg font-semibold text-gray-800 border-b-2 border-blue-600 pb-2">Informations Fixes || المعلومات الثابتة</h2>
+                <!-- ZONE A: Comprehensive Information (Left Column) -->
+                <div class="space-y-3 overflow-y-auto" style="max-height: 75vh;">
+                    
+                    <!-- PROFIL -->
+                    <details class="bg-white p-3 rounded-lg shadow-sm border border-gray-200">
+                        <summary class="text-sm font-semibold text-blue-700 cursor-pointer mb-2 hover:text-blue-900">PROFIL</summary>
+                        <div class="space-y-1.5 pl-2">
+                            <div><label class="block text-xs font-medium text-gray-600">Nom (Fr) <span class="text-red-600">*</span></label><input type="text" readonly value="{{ $user->name ?? 'N/A' }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" /></div>
+                            <div><label class="block text-xs font-medium text-gray-600">Prénom (Fr) <span class="text-red-600">*</span></label><input type="text" readonly value="{{ $user->prenom ?? 'N/A' }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" /></div>
+                            <div><label class="block text-xs font-medium text-gray-600">الإسم العائلي <span class="text-red-600">*</span></label><input type="text" readonly value="{{ optional($user->doctorantProfile)->nom_arabe ?? 'N/A' }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" dir="rtl" /></div>
+                            <div><label class="block text-xs font-medium text-gray-600">الإسم الشخصي <span class="text-red-600">*</span></label><input type="text" readonly value="{{ optional($user->doctorantProfile)->prenom_arabe ?? 'N/A' }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" dir="rtl" /></div>
+                            <div><label class="block text-xs font-medium text-gray-600">CIN <span class="text-red-600">*</span></label><input type="text" readonly value="{{ optional($user->doctorantProfile)->cin ?? 'N/A' }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" /></div>
+                            <div><label class="block text-xs font-medium text-gray-600">CNE <span class="text-red-600">*</span></label><input type="text" readonly value="{{ optional($user->doctorantProfile)->cne ?? 'N/A' }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" /></div>
+                            <div><label class="block text-xs font-medium text-gray-600">Date de naissance <span class="text-red-600">*</span></label><input type="text" readonly value="{{ optional($user->doctorantProfile)->date_naissance ?? 'N/A' }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" /></div>
+                            <div><label class="block text-xs font-medium text-gray-600">Email <span class="text-red-600">*</span></label><input type="text" readonly value="{{ $user->email ?? 'N/A' }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" /></div>
+                            <div><label class="block text-xs font-medium text-gray-600">Téléphone <span class="text-red-600">*</span></label><input type="text" readonly value="{{ optional($user->doctorantProfile)->telephone ?? 'N/A' }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" /></div>
+                            <div><label class="block text-xs font-medium text-gray-600">Genre <span class="text-red-600">*</span></label><input type="text" readonly value="{{ ucfirst(optional($user->doctorantProfile)->genre ?? 'N/A') }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" /></div>
+                            <div><label class="block text-xs font-medium text-gray-600">Situation Familiale <span class="text-red-600">*</span></label><input type="text" readonly value="{{ optional($user->doctorantProfile)->situation_familiale ?? 'N/A' }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" /></div>
+                            <div><label class="block text-xs font-medium text-gray-600">Situation Administrative <span class="text-red-600">*</span></label><input type="text" readonly value="{{ optional($user->doctorantProfile)->situation_administrative ?? 'N/A' }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" /></div>
+                            <div><label class="block text-xs font-medium text-gray-600">ORCID <span class="text-red-600">*</span></label><input type="text" readonly value="{{ optional($user->doctorantProfile)->orcid ?? 'N/A' }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" /></div>
+                        </div>
+                    </details>
 
-                    <!-- Row 1: Name, CNE, CIN -->
-                    <div class="space-y-3">
-                        <div>
-                            <label class="block text-xs font-medium text-gray-600 mb-1">Nom et Prénom || الاسم الكامل</label>
-                            <input type="text" readonly value="{{ $user->name }}" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-gray-700 text-sm" />
+                    <!-- THÈSE -->
+                    <details class="bg-white p-3 rounded-lg shadow-sm border border-gray-200">
+                        <summary class="text-sm font-semibold text-blue-700 cursor-pointer mb-2 hover:text-blue-900">THÈSE</summary>
+                        <div class="space-y-1.5 pl-2">
+                            <div><label class="block text-xs font-medium text-gray-600">Apogée <span class="text-red-600">*</span></label><input type="text" readonly value="{{ optional($user->these)->apogee ?? 'N/A' }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" /></div>
+                            <div><label class="block text-xs font-medium text-gray-600">Centre Etudes Doctorales <span class="text-red-600">*</span></label><input type="text" readonly value="{{ optional(optional($user->these)->ced)->intitule ?? 'N/A' }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" /></div>
+                            <div><label class="block text-xs font-medium text-gray-600">Formations doctorales <span class="text-red-600">*</span></label><input type="text" readonly value="{{ optional(optional($user->these)->ped)->intitule ?? 'N/A' }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" /></div>
+                            <div><label class="block text-xs font-medium text-gray-600">Sujet de Thèse <span class="text-red-600">*</span></label><textarea readonly class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" rows="2">{{ optional(optional($user->these)->sujet)->intitule_sujet ?? 'N/A' }}</textarea></div>
+                            <div><label class="block text-xs font-medium text-gray-600">Année inscription <span class="text-red-600">*</span></label><input type="text" readonly value="{{ optional($user->these)->annee_inscription ?? 'N/A' }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" /></div>
+                            <div><label class="block text-xs font-medium text-gray-600">Année 1ère inscription <span class="text-red-600">*</span></label><input type="text" readonly value="{{ optional($user->these)->annee_premiere_inscription ?? 'N/A' }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" /></div>
+                            <div><label class="block text-xs font-medium text-gray-600">Etablissement <span class="text-red-600">*</span></label><input type="text" readonly value="{{ optional(optional($user->these)->etablissement)->intitulefr ?? 'N/A' }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" /></div>
+                            <div><label class="block text-xs font-medium text-gray-600">Laboratoire <span class="text-red-600">*</span></label><input type="text" readonly value="{{ optional(optional($user->these)->laboratoire)->intitule ?? 'N/A' }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" /></div>
+                            <div><label class="block text-xs font-medium text-gray-600">Directeur de thèse <span class="text-red-600">*</span></label><input type="text" readonly value="{{ optional(optional($user->these)->directeur)->nom_fr ?? 'N/A' }} {{ optional(optional($user->these)->directeur)->prenom ?? '' }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" /></div>
+                            @if(optional($user->these)->co_directeur_type && optional($user->these)->co_directeur_type !== 'non')
+                            <div><label class="block text-xs font-medium text-gray-600">Co-Directeur <span class="text-red-600">*</span></label>
+                                @if(optional($user->these)->co_directeur_type === 'interne')
+                                    <input type="text" readonly value="{{ optional(optional($user->these)->coDirecteur)->nom_fr ?? '' }} {{ optional(optional($user->these)->coDirecteur)->prenom ?? '' }} (Interne)" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" />
+                                @else
+                                    <input type="text" readonly value="{{ optional($user->these)->co_directeur_nom ?? '' }} {{ optional($user->these)->co_directeur_prenom ?? '' }} ({{ optional($user->these)->co_directeur_etablissement ?? '' }})" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" />
+                                @endif
+                            </div>
+                            @endif
+                            <div><label class="block text-xs font-medium text-gray-600">Date prévue soutenance <span class="text-red-600">*</span></label><input type="text" readonly value="{{ optional($user->these)->date_prevue_soutenance ?? 'N/A' }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" /></div>
                         </div>
-                        <div>
-                            <label class="block text-xs font-medium text-gray-600 mb-1">CNE</label>
-                            <input type="text" readonly value="{{ optional($user->doctorantProfile)->cne ?? 'N/A' }}" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-gray-700 text-sm" />
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-gray-600 mb-1">CIN</label>
-                            <input type="text" readonly value="{{ optional($user->doctorantProfile)->cin ?? 'N/A' }}" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-gray-700 text-sm" />
-                        </div>
-                    </div>
+                    </details>
 
-                    <!-- Row 2: Thesis Info -->
-                    <div class="space-y-3 pt-4 border-t">
-                        <div>
-                            <label class="block text-xs font-medium text-gray-600 mb-1">Sujet de Thèse || موضوع الأطروحة</label>
-                            <input type="text" readonly value="{{ optional($user->these)->sujet->intitule_sujet ?? 'N/A' }}" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-gray-700 text-sm" />
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-gray-600 mb-1">Laboratoire || المختبر</label>
-                            <input type="text" readonly value="{{ optional(optional($user->these)->laboratoire)->intitule ?? 'N/A' }}" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-gray-700 text-sm" />
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-gray-600 mb-1">Directeur de Thèse || المشرف</label>
-                            <input type="text" readonly value="{{ optional(optional($user->these)->directeur)->nom_fr ?? 'N/A' }} {{ optional(optional($user->these)->directeur)->prenom ?? '' }}" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-gray-700 text-sm" />
-                        </div>
-                    </div>
+                    <!-- ARTICLES -->
+                    <details class="bg-white p-3 rounded-lg shadow-sm border border-gray-200">
+                        <summary class="text-sm font-semibold text-blue-700 cursor-pointer mb-2 hover:text-blue-900">ARTICLES ({{ $articles->count() }})</summary>
+                        @if($articles->count() > 0)
+                            <div class="space-y-2 pl-2 max-h-48 overflow-y-auto">
+                                @foreach($articles as $article)
+                                    <div class="p-2 bg-gray-50 border-l-2 border-blue-500 rounded text-xs">
+                                        <div class="font-semibold text-gray-800">{{ $article->titre }} <span class="text-red-600">*</span></div>
+                                        <div class="text-gray-600 mt-0.5">
+                                            <strong>Type:</strong> {{ ucfirst($article->type ?? 'N/A') }} <span class="text-red-600">*</span> | 
+                                            <strong>Année:</strong> {{ $article->annee ?? 'N/A' }} <span class="text-red-600">*</span>
+                                        </div>
+                                        @if($article->doi)<div class="text-gray-600">DOI: {{ $article->doi }}</div>@endif
+                                        @if($article->lien)<div class="text-gray-600 truncate">Lien: <a href="{{ $article->lien }}" target="_blank" class="text-blue-600">{{ Str::limit($article->lien, 30) }}</a></div>@endif
+                                    </div>
+                                @endforeach
+                            </div>
+                        @else
+                            <p class="text-xs text-gray-500 italic pl-2">Aucun article enregistré</p>
+                        @endif
+                    </details>
 
-                    <!-- Row 3: Contact & Personal Info -->
-                    <div class="space-y-3 pt-4 border-t">
-                        <div>
-                            <label class="block text-xs font-medium text-gray-600 mb-1">Email</label>
-                            <input type="email" readonly value="{{ $user->email ?? 'N/A' }}" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-gray-700 text-sm" />
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-gray-600 mb-1">Téléphone</label>
-                            <input type="text" readonly value="{{ optional($user->doctorantProfile)->telephone ?? 'N/A' }}" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-gray-700 text-sm" />
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-gray-600 mb-1">Genre || النوع</label>
-                            <input type="text" readonly value="{{ ucfirst(optional($user->doctorantProfile)->genre ?? 'N/A') }}" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-gray-700 text-sm" />
-                        </div>
-                    </div>
+                    <!-- COMMUNICATIONS -->
+                    <details class="bg-white p-3 rounded-lg shadow-sm border border-gray-200">
+                        <summary class="text-sm font-semibold text-blue-700 cursor-pointer mb-2 hover:text-blue-900">COMMUNICATIONS ({{ $communications->count() }})</summary>
+                        @if($communications->count() > 0)
+                            <div class="space-y-2 pl-2 max-h-48 overflow-y-auto">
+                                @foreach($communications as $communication)
+                                    <div class="p-2 bg-gray-50 border-l-2 border-green-500 rounded text-xs">
+                                        <div class="font-semibold text-gray-800">{{ $communication->titre }} <span class="text-red-600">*</span></div>
+                                        <div class="text-gray-600 mt-0.5"><strong>Année:</strong> {{ $communication->annee ?? 'N/A' }} <span class="text-red-600">*</span></div>
+                                        @if($communication->doi)<div class="text-gray-600">DOI: {{ $communication->doi }}</div>@endif
+                                        @if($communication->lien)<div class="text-gray-600 truncate">Lien: <a href="{{ $communication->lien }}" target="_blank" class="text-blue-600">{{ Str::limit($communication->lien, 30) }}</a></div>@endif
+                                    </div>
+                                @endforeach
+                            </div>
+                        @else
+                            <p class="text-xs text-gray-500 italic pl-2">Aucune communication enregistrée</p>
+                        @endif
+                    </details>
                 </div>
 
-                <!-- ZONE B: Editable Information (Right Column) -->
-                <div>
-                    <h2 class="text-lg font-semibold text-gray-800 border-b-2 border-green-600 pb-2 mb-4">Dossier d'Avancement || ملف التقدم</h2>
+                <!-- ZONE B: Form (Right Column) -->
+                <div class="bg-white p-4 rounded-lg shadow-sm">
+                    <h2 class="text-lg font-semibold text-green-700 border-b-2 border-green-600 pb-2 mb-4">Dossier d'Avancement</h2>
 
-                    <form action="{{ route('reinscription.store') }}" method="POST" enctype="multipart/form-data" id="reinscriptionForm" class="space-y-4">
+                    <form action="{{ route('reinscription.store') }}\" method="POST" enctype="multipart/form-data" id="reinscriptionForm">
                         @csrf
 
-                        <!-- Field 1: Niveau d'inscription -->
-                        <div>
-                            <label for="annee_inscription" class="block text-xs font-medium text-gray-700 mb-1">
-                                Niveau d'Inscription || سنة التسجيل <span class="text-red-600">*</span>
-                            </label>
-                            <select
-                                id="annee_inscription"
-                                name="annee_inscription"
-                                required
-                                class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            >
-                                <option value="">-- Sélectionnez --</option>
-                                <option value="2">2ème Année</option>
-                                <option value="3">3ème Année</option>
-                                <option value="4">4ème Année (Dérogation)</option>
-                                <option value="5">5ème Année (Dérogation)</option>
-                                <option value="6">6ème Année (Dérogation)</option>
-                            </select>
-                            @error('annee_inscription') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
-
-                            <!-- Derogation Alert -->
-                            <div id="derogationAlert" class="hidden mt-2 p-2 bg-amber-50 border border-amber-200 rounded text-xs text-amber-800">
-                                <p>⚠️ Demande de dérogation requise</p>
-                            </div>
-                        </div>
-
-                        <!-- Field 2: Rapport d'activité (Drag & Drop) -->
-                        <div>
-                            <label for="rapport_file" class="block text-xs font-medium text-gray-700 mb-1">
-                                Rapport d'Activité Signé || تقرير النشاط <span class="text-red-600">*</span>
-                            </label>
-
-                            <div id="dropZone" class="relative border-2 border-dashed border-gray-300 rounded p-4 text-center cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition bg-gray-50">
-                                <p class="text-xs text-gray-600 mb-2">📄 PDF (Max 5MB)</p>
-                                <p class="text-xs text-gray-500">Cliquez ou glissez-déposez votre fichier ici</p>
-                                <input
-                                    type="file"
-                                    id="rapport_file"
-                                    name="rapport_file"
-                                    accept="application/pdf"
-                                    required
-                                    class="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
-                                    style="z-index: 1;"
-                                />
-                            </div>
-
-                            <!-- Selected file display -->
-                            <div id="filePreview" class="hidden mt-2 p-2 bg-green-50 border border-green-200 rounded text-xs text-green-800">
-                                ✓ <span id="fileName">Fichier sélectionné</span>
-                            </div>
-
-                            @error('rapport_file') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
-                        </div>
-
-                        <!-- Field 3: Thesis Progress / État d'Avancement -->
-                        <div>
+                        <!-- Thesis Progress -->
+                        <div class="mb-4">
                             <label for="thesis_progress" class="block text-xs font-medium text-gray-700 mb-1">
                                 État d'Avancement de la Thèse || تقدم الاطروحة <span class="text-red-600">*</span>
                             </label>
@@ -136,15 +121,15 @@
                                 id="thesis_progress"
                                 name="thesis_progress"
                                 required
-                                rows="4"
-                                placeholder="Décrivez le progrès actuel de votre thèse, les chapitres complétés, les résultats obtenus, et les prochaines étapes... || اكتب عن التقدم الحالي لأطروحتك..."
+                                rows="6"
+                                placeholder="Décrivez le progrès actuel de votre thèse, les chapitres complétés, les résultats obtenus, et les prochaines étapes..."
                                 class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             ></textarea>
                             @error('thesis_progress') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
                         </div>
 
-                        <!-- Field 4: Validation Checkbox -->
-                        <div class="pt-2 border-t">
+                        <!-- Certification Checkbox -->
+                        <div class="mb-4 pt-3 border-t">
                             <div class="flex items-start gap-2">
                                 <input
                                     id="directeur_valide"
@@ -155,8 +140,7 @@
                                     class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 mt-0.5"
                                 />
                                 <label for="directeur_valide" class="text-xs text-gray-700">
-                                    Je certifie l'exactitude des informations || أشهد بصحة المعلومات
-                                    <span class="text-red-600">*</span>
+                                    Je certifie l'exactitude des informations || أشهد بصحة المعلومات <span class="text-red-600">*</span>
                                 </label>
                             </div>
                             @error('directeur_valide') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
@@ -165,7 +149,7 @@
                         <input type="hidden" id="derniere_publication" name="derniere_publication" value="" />
 
                         <!-- Submit Button -->
-                        <div class="flex justify-end gap-2 pt-4 border-t">
+                        <div class="flex justify-end pt-3 border-t">
                             <button
                                 id="submitBtn"
                                 type="submit"
@@ -185,198 +169,190 @@
 
 <style>
 .reinscription-container {
-    background: linear-gradient(135deg, #f5f7fa 0%, #eef2f7 100%);
+    background: #ffffff;
     min-height: calc(100vh - 150px);
     padding: 2rem 0;
 }
 
-/* Page Header */
-.reinscription-container h1 {
-    color: #1f2937;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-}
-
-.reinscription-container .text-gray-500 {
-    color: #6b7280;
-    font-weight: 500;
-}
-
-/* Section Headers */
-.reinscription-container h2 {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #050372;
-    padding-bottom: 0.75rem;
-    margin-bottom: 1rem;
-    border-bottom: 3px solid #050372;
-}
-
-/* Form Cards */
-.reinscription-container .space-y-4,
-.reinscription-container > div {
-    background: white;
-    padding: 1.5rem;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-}
-
-/* Input Fields - Read Only */
-.reinscription-container input[readonly] {
-    background: #f3f4f6;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    padding: 0.65rem 1rem;
-    color: #374151;
-    font-size: 0.9rem;
-    font-weight: 500;
-}
-
-/* Labels */
-.reinscription-container label {
-    color: #374151;
-    font-weight: 600;
-    font-size: 0.85rem;
-    margin-bottom: 0.4rem;
-}
-
-/* Form Inputs */
-.reinscription-container select,
-.reinscription-container textarea {
-    border: 2px solid #e5e7eb;
-    border-radius: 8px;
-    padding: 0.75rem 1rem;
-    font-size: 0.9rem;
-    transition: all 0.2s ease;
-    background: white;
-}
-
-.reinscription-container select:focus,
-.reinscription-container textarea:focus {
-    outline: none;
-    border-color: #050372;
-    box-shadow: 0 0 0 3px rgba(5,3,114,0.1);
-}
-
-/* Drop Zone */
-#dropZone {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    border: 2px dashed #d1d5db;
-    border-radius: 12px;
-    padding: 2rem;
+/* Card Styling */
+details, .bg-white {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     transition: all 0.3s ease;
-    cursor: pointer;
 }
 
-#dropZone:hover {
-    border-color: #050372;
-    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+details:hover, .bg-white:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(5,3,114,0.15);
 }
 
-#dropZone p {
-    pointer-events: none;
-    margin: 0.25rem 0;
+/* Details/Summary Styling */
+details summary {
+    list-style: none;
+    user-select: none;
+    background: linear-gradient(135deg, #f6f8fb 0%, #e9ecef 100%);
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    margin-bottom: 0.75rem;
 }
 
-/* File Preview */
-#filePreview {
-    background: #d1fae5;
-    border: 1px solid #6ee7b7;
-    border-radius: 8px;
-    padding: 0.75rem 1rem;
-    color: #065f46;
-    font-weight: 600;
+details summary::-webkit-details-marker {
+    display: none;
 }
 
-/* Alert Boxes */
-#derogationAlert {
-    background: #fef3c7;
-    border: 1px solid #fbbf24;
-    border-radius: 8px;
-    padding: 0.75rem 1rem;
-    color: #92400e;
+details summary::before {
+    content: '▶';
+    display: inline-block;
+    margin-right: 0.5em;
+    transition: transform 0.3s ease;
+    font-size: 0.8em;
 }
 
-.reinscription-container .bg-blue-50 {
-    background: #eff6ff;
-    border: 1px solid #93c5fd;
-    border-radius: 8px;
+details[open] summary::before {
+    transform: rotate(90deg);
+}
+
+details summary:hover {
+    background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+}
+
+/* Form Section Header */
+h2 {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white !important;
     padding: 1rem;
+    border-radius: 0.5rem 0.5rem 0 0;
+    margin: -1rem -1rem 1rem -1rem;
+    border: none !important;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-/* Checkbox */
-.reinscription-container input[type="checkbox"] {
-    width: 1.1rem;
-    height: 1.1rem;
-    border-radius: 4px;
-    border: 2px solid #d1d5db;
-    cursor: pointer;
+/* Input Fields */
+input[readonly], textarea[readonly] {
+    background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+    border: 1px solid #e5e7eb;
+    transition: all 0.2s ease;
 }
 
-.reinscription-container input[type="checkbox"]:checked {
-    background-color: #050372;
-    border-color: #050372;
+textarea, input[type="text"]:not([readonly]) {
+    transition: all 0.3s ease;
+    border: 2px solid #e5e7eb;
 }
 
-/* Submit Button */
+textarea:focus, input[type="text"]:not([readonly]):focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    transform: translateY(-1px);
+}
+
+/* Button Styling */
 .btn-primary {
-    background: #050372;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
-    padding: 0.75rem 2rem;
+    padding: 0.5rem 1.5rem;
     border-radius: 8px;
     font-weight: 600;
-    font-size: 0.95rem;
+    font-size: 0.875rem;
     border: none;
     cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 6px rgba(5,3,114,0.3);
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
 }
 
 .btn-primary:hover:not(:disabled) {
-    background: #040261;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(5,3,114,0.4);
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
 }
 
 .btn-primary:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+    background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
 }
 
-/* Required Star */
+/* Status Badges */
+.text-green-600 {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white !important;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);
+}
+
 .text-red-600 {
     color: #dc2626;
-    font-weight: 700;
+    font-weight: 600;
 }
 
-/* Spacing Improvements */
-.reinscription-container .space-y-3 > * + * {
-    margin-top: 1rem;
+/* Article/Communication Cards */
+.border-l-2 {
+    transition: all 0.2s ease;
 }
 
-.reinscription-container .space-y-4 > * + * {
-    margin-top: 1.25rem;
+.border-l-2:hover {
+    background: white !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transform: translateX(4px);
 }
 
-/* Border Top sections */
-.reinscription-container .border-t {
-    border-top: 2px solid #e5e7eb;
-    padding-top: 1.25rem;
-    margin-top: 1.25rem;
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
 }
 
-/* Grid improvements */
-.reinscription-container .grid {
-    gap: 2rem;
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 10px;
 }
 
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+/* Responsive Design */
 @media (max-width: 1024px) {
-    .reinscription-container .grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
+    .grid {
+        grid-template-columns: 1fr !important;
     }
+    
+    .reinscription-container {
+        padding: 1rem 0;
+    }
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+details {
+    animation: fadeIn 0.3s ease;
+}
+
+/* Checkbox Styling */
+input[type="checkbox"] {
+    cursor: pointer;
+    accent-color: #667eea;
+}
+
+input[type="checkbox"]:checked {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 </style>
 

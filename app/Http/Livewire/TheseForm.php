@@ -169,7 +169,6 @@ class TheseForm extends Component
 
             DB::commit();
             session()->flash('success', 'Thèse enregistrée avec succès ! / تم تسجيل الأطروحة بنجاح!');
-            $this->dispatchBrowserEvent('theseSaved', ['message' => 'Thèse enregistrée avec succès !']);
         } catch (\Illuminate\Database\QueryException $e) {
             DB::rollBack();
             

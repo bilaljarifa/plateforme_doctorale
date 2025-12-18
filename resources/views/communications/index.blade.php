@@ -10,7 +10,7 @@
         <div class="alert alert-success mb-4">{{ session('success') }}</div>
     @endif
 
-    <div class="communications-actions mb-4" x-data="{ showAddModal: false }">
+    <div class="communications-actions mb-4" x-data="{ showAddModal: {{ $errors->any() ? 'true' : 'false' }} }">
         <button type="button" @click="showAddModal = true" class="btn-add-communication">
             <i class="bi bi-plus-lg"></i> Ajouter Communication
         </button>
@@ -26,6 +26,18 @@
                 <form action="{{ route('communications.store') }}" method="POST">
                     @csrf
                     <div class="modal-body">
+                        <!-- Validation Errors -->
+                        @if ($errors->any())
+                            <div class="alert alert-danger mb-3">
+                                <strong>Erreur!</strong>
+                                <ul class="mb-0">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+                        
                         <!-- Required fields notice -->
                         <p style="color: #dc3545; font-style: italic; font-weight: 500; font-size: 0.8rem; margin-bottom: 1.25rem; text-align: center;">
                             <span style="color: #dc3545; font-weight: 700;">*</span> Les champs marqués d'un astérisque sont obligatoires
@@ -38,27 +50,22 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label>Nom de l'événement <span class="required">*</span></label>
-                                    <input type="text" name="evenement" required class="form-input" placeholder="Ex: Conférence Internationale..." />
+                                    <label>Année <span class="required">*</span></label>
+                                    <input type="number" name="annee" value="{{ date('Y') }}" required class="form-input" />
                                 </div>
                             </div>
 
                             <div class="form-column">
                                 <div class="form-group">
-                                    <label>Année <span class="required">*</span></label>
-                                    <input type="number" name="annee" value="{{ date('Y') }}" required class="form-input" />
-                                </div>
-
-                                <div class="form-group">
                                     <label>DOI</label>
                                     <input type="text" name="doi" placeholder="10.1000/example" class="form-input" />
                                 </div>
-                            </div>
-                        </div>
 
-                        <div class="form-group">
-                            <label>Lien</label>
-                            <input type="url" name="lien" class="form-input" />
+                                <div class="form-group">
+                                    <label>Lien</label>
+                                    <input type="url" name="lien" class="form-input" />
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -83,6 +90,8 @@
     .profile-title { font-size: 1.5rem; font-weight: 600; color: #1a202c; margin: 0; }
     .alert { padding: 0.75rem 1rem; border-radius: 6px; margin-bottom: 1rem; font-size: 14px; }
     .alert-success { background-color: #d4edda; border: 1px solid #c3e6cb; color: #155724; }
+    .alert-danger { background-color: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
+    .alert ul { margin-top: 0.5rem; padding-left: 1.5rem; }
     .communications-actions { display: flex; justify-content: flex-end; }
     .btn-add-communication { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.5rem 0.9rem; background: #050372; color: white; border: none; border-radius: 6px; font-weight: 500; font-size: 0.85rem; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 1px 3px rgba(5,3,114,0.2); }
     .btn-add-communication:hover { box-shadow: 0 2px 6px rgba(5,3,114,0.3); transform: translateY(-1px); background: #040261; }

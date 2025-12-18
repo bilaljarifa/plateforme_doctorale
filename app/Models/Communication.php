@@ -10,7 +10,6 @@ class Communication extends Model
     protected $fillable = [
         'user_id',
         'titre',
-        'evenement',
         'annee',
         'lien',
         'doi',

@@ -1,121 +1,102 @@
 @extends('layouts.dashboard')
 
 @section('content')
-<div class="reinscription-success">
-    <div class="container mx-auto px-4 py-12 max-w-2xl">
-        <!-- Success Header -->
-        <div class="text-center mb-8">
-            <div class="inline-block p-4 bg-green-100 rounded-full mb-4">
-                <svg class="w-12 h-12 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                </svg>
-            </div>
-            <h1 class="text-3xl font-bold text-green-700 mb-2">Réinscription Enregistrée</h1>
-            <p class="text-gray-600">Votre demande de réinscription a été soumise avec succès.</p>
-        </div>
+<div class="success-container">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
 
-        <!-- Receipt Box -->
-        <div class="bg-white border-2 border-green-200 rounded-lg shadow-lg p-8 mb-8">
+        <!-- Receipt Card -->
+        <div class="receipt-card">
             <!-- Receipt Header -->
-            <div class="border-b-2 border-green-300 pb-4 mb-6 text-center">
-                <h2 class="text-2xl font-bold text-green-700">Reçu de Réinscription</h2>
-                <p class="text-sm text-gray-500 mt-2">Université Ibn Tofail - جامعة ابن طفيل</p>
+            <div class="receipt-header">
+                <h2 class="receipt-title">Reçu de Réinscription || إيصال إعادة التسجيل</h2>
+                <p class="receipt-university">Université Ibn Tofail | جامعة ابن طفيل</p>
             </div>
 
             <!-- Student Info -->
-            <div class="mb-6">
-                <h3 class="text-lg font-semibold text-gray-800 mb-3 border-b-2 border-blue-600 pb-2">Informations Étudiant</h3>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <p class="text-xs font-medium text-gray-600">Nom et Prénom</p>
-                        <p class="text-sm font-semibold text-gray-900">{{ $user->name }}</p>
+            <div class="receipt-section">
+                <h3 class="section-title">Informations Étudiant || معلومات الطالب</h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="label">Nom et Prénom</span>
+                        <span class="value">{{ $user->name }}</span>
                     </div>
-                    <div>
-                        <p class="text-xs font-medium text-gray-600">CNE</p>
-                        <p class="text-sm font-semibold text-gray-900">{{ $user->cne ?? 'N/A' }}</p>
+                    <div class="info-item">
+                        <span class="label">Email</span>
+                        <span class="value">{{ $user->email }}</span>
                     </div>
-                    <div>
-                        <p class="text-xs font-medium text-gray-600">CIN</p>
-                        <p class="text-sm font-semibold text-gray-900">{{ $user->cin ?? 'N/A' }}</p>
+                    <div class="info-item">
+                        <span class="label">CNE</span>
+                        <span class="value">{{ optional($user->doctorantProfile)->cne ?? 'N/A' }}</span>
                     </div>
-                    <div>
-                        <p class="text-xs font-medium text-gray-600">Email</p>
-                        <p class="text-sm font-semibold text-gray-900">{{ $user->email }}</p>
+                    <div class="info-item">
+                        <span class="label">CIN</span>
+                        <span class="value">{{ optional($user->doctorantProfile)->cin ?? 'N/A' }}</span>
                     </div>
                 </div>
             </div>
 
             <!-- Thesis Info -->
-            <div class="mb-6">
-                <h3 class="text-lg font-semibold text-gray-800 mb-3 border-b-2 border-blue-600 pb-2">Informations Thèse</h3>
+            <div class="receipt-section">
+                <h3 class="section-title">Informations Thèse || معلومات الأطروحة</h3>
                 <div class="space-y-3">
-                    <div>
-                        <p class="text-xs font-medium text-gray-600">Sujet de Thèse</p>
-                        <p class="text-sm text-gray-900">{{ optional($user->these)->sujet->intitule_sujet ?? 'N/A' }}</p>
+                    <div class="info-item">
+                        <span class="label">Sujet de Thèse</span>
+                        <span class="value">{{ optional($user->these)->sujet->intitule_sujet ?? 'N/A' }}</span>
                     </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <p class="text-xs font-medium text-gray-600">Directeur de Thèse</p>
-                            <p class="text-sm text-gray-900">{{ optional(optional($user->these)->directeur)->nom_fr ?? 'N/A' }} {{ optional(optional($user->these)->directeur)->prenom ?? '' }}</p>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="label">Directeur de Thèse</span>
+                            <span class="value">{{ optional(optional($user->these)->directeur)->nom_fr ?? 'N/A' }} {{ optional(optional($user->these)->directeur)->prenom ?? '' }}</span>
                         </div>
-                        <div>
-                            <p class="text-xs font-medium text-gray-600">Laboratoire</p>
-                            <p class="text-sm text-gray-900">{{ optional(optional($user->these)->laboratoire)->intitule ?? 'N/A' }}</p>
+                        <div class="info-item">
+                            <span class="label">Laboratoire</span>
+                            <span class="value">{{ optional(optional($user->these)->laboratoire)->intitule ?? 'N/A' }}</span>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Reinscription Details -->
-            <div class="mb-6">
-                <h3 class="text-lg font-semibold text-gray-800 mb-3 border-b-2 border-blue-600 pb-2">Détails de Réinscription</h3>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <p class="text-xs font-medium text-gray-600">Année Académique</p>
-                        <p class="text-sm font-semibold text-green-700">{{ $annee_academique }}</p>
+            <div class="receipt-section">
+                <h3 class="section-title">Détails de Réinscription || تفاصيل إعادة التسجيل</h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="label">Année Académique</span>
+                        <span class="value-highlight">{{ $annee_academique }}</span>
                     </div>
-                    <div>
-                        <p class="text-xs font-medium text-gray-600">Année d'Inscription</p>
-                        <p class="text-sm font-semibold text-green-700">
+                    <div class="info-item">
+                        <span class="label">Année d'Inscription</span>
+                        <span class="value-highlight">
                             @php
+                                $annee = optional($user->these)->annee_inscription;
                                 $map = ['2' => '2ème Année','3' => '3ème Année','4' => '4ème Année (Dérogation)','5' => '5ème Année (Dérogation)','6' => '6ème Année (Dérogation)'];
                             @endphp
-                            {{ $map[$reinscription->annee_inscription] ?? $reinscription->annee_inscription }}
-                        </p>
+                            {{ $annee ? ($map[$annee] ?? $annee) : 'N/A' }}
+                        </span>
                     </div>
                     @if(!empty($reinscription->rapport_path))
-                        <div>
-                            <p class="text-xs font-medium text-gray-600">Rapport d'Activité</p>
-                            <p class="text-sm text-gray-900">{{ basename($reinscription->rapport_path) }}</p>
+                        <div class="info-item">
+                            <span class="label">Rapport d'Activité</span>
+                            <span class="value">{{ basename($reinscription->rapport_path) }}</span>
                         </div>
                     @endif
-                    <div>
-                        <p class="text-xs font-medium text-gray-600">Date de Soumission</p>
-                        <p class="text-sm text-gray-900">{{ $reinscription->created_at->format('d/m/Y à H:i') }}</p>
+                    <div class="info-item">
+                        <span class="label">Date de Soumission</span>
+                        <span class="value">{{ $reinscription->created_at->format('d/m/Y à H:i') }}</span>
                     </div>
                 </div>
-            </div>
-
-            <!-- Certification -->
-            <div class="bg-blue-50 border-l-4 border-blue-600 p-4 rounded">
-                <p class="text-sm text-blue-900">
-                    <strong>✓ Certification:</strong> L'étudiant(e) est régulièrement réinscrit(e) en Doctorat pour l'année académique <strong>{{ $annee_academique }}</strong>.
-                </p>
             </div>
         </div>
 
         <!-- Action Buttons -->
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="{{ route('reinscription.download-receipt', $reinscription->id) }}" class="inline-flex items-center justify-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8m0 0l-4 4m4-4l4 4"/>
+        <div class="action-buttons">
+            <a id="download-pdf-btn" href="{{ route('reinscription.download-receipt', $reinscription->id) }}" class="btn-pdf">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                 </svg>
                 Télécharger PDF
             </a>
-            <a href="{{ route('dashboard') }}" class="inline-flex items-center justify-center px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold rounded-lg transition gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-3m0 0l7-4 7 4M5 9v10a1 1 0 001 1h12a1 1 0 001-1V9m-9 11l4-2m-9-2l4 2m0-11L9 3m6 6l4-2"/>
-                </svg>
+            <a href="{{ route('dashboard') }}" class="btn-dashboard">
                 Retour au Tableau de Bord
             </a>
         </div>
@@ -123,12 +104,146 @@
 </div>
 
 <style>
-    .reinscription-success {
-        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-        min-height: calc(100vh - 150px);
-        display: flex;
-        align-items: center;
-        padding: 20px 0;
+.success-container {
+    background: #f9fafb;
+    min-height: calc(100vh - 100px);
+    padding: 40px 0;
+}
+
+.receipt-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.receipt-header {
+    background: white;
+    padding: 24px;
+    text-align: center;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.receipt-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #111827;
+    margin: 0 0 6px 0;
+}
+
+.receipt-university {
+    font-size: 13px;
+    color: #6b7280;
+    margin: 0;
+}
+
+.receipt-section {
+    padding: 20px 24px;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.receipt-section:last-of-type {
+    border-bottom: none;
+}
+
+.section-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 14px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #6b7280;
+    letter-spacing: 0.5px;
+}
+
+.value {
+    font-size: 14px;
+    color: #111827;
+}
+
+.value-highlight {
+    font-size: 14px;
+    font-weight: 600;
+    color: #059669;
+}
+
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+@media (min-width: 640px) {
+    .action-buttons {
+        flex-direction: row;
+        justify-content: center;
     }
+}
+
+.btn-pdf {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 20px;
+    background: #3b82f6;
+    color: white;
+    font-weight: 600;
+    font-size: 13px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.btn-pdf:hover {
+    background: #2563eb;
+}
+
+.btn-dashboard {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 20px;
+    background: white;
+    color: #374151;
+    font-weight: 600;
+    font-size: 13px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.btn-dashboard:hover {
+    background: #f9fafb;
+}
+
+@media (max-width: 640px) {
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+}
 </style>
+
 @endsection

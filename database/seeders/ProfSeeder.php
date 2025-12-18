@@ -32,6 +32,21 @@ class ProfSeeder extends Seeder
             ['nom_fr' => 'Oukessou', 'prenom' => 'Said', 'email' => 's.oukessou@uit.ac.ma'],
             ['nom_fr' => 'Chakir', 'prenom' => 'Meriem', 'email' => 'm.chakir@uit.ac.ma'],
             ['nom_fr' => 'Hamidi', 'prenom' => 'Rachid', 'email' => 'r.hamidi@uit.ac.ma'],
+            ['nom_fr' => 'El Kadiri', 'prenom' => 'Abdellatif', 'email' => 'a.elkadiri@uit.ac.ma'],
+            ['nom_fr' => 'Tounsi', 'prenom' => 'Leila', 'email' => 'l.tounsi@uit.ac.ma'],
+            ['nom_fr' => 'Senhaji', 'prenom' => 'Driss', 'email' => 'd.senhaji@uit.ac.ma'],
+            ['nom_fr' => 'Moussaoui', 'prenom' => 'Khadija', 'email' => 'k.moussaoui@uit.ac.ma'],
+            ['nom_fr' => 'Azzouzi', 'prenom' => 'Mustapha', 'email' => 'm.azzouzi@uit.ac.ma'],
+            ['nom_fr' => 'Bennani', 'prenom' => 'Soumaya', 'email' => 's.bennani@uit.ac.ma'],
+            ['nom_fr' => 'Idrissi', 'prenom' => 'Abderrahim', 'email' => 'a.idrissi@uit.ac.ma'],
+            ['nom_fr' => 'Chraibi', 'prenom' => 'Houda', 'email' => 'h.chraibi@uit.ac.ma'],
+            ['nom_fr' => 'El Ouardi', 'prenom' => 'Khalid', 'email' => 'k.elouardi@uit.ac.ma'],
+            ['nom_fr' => 'Fassi Fihri', 'prenom' => 'Samira', 'email' => 's.fassifihri@uit.ac.ma'],
+            ['nom_fr' => 'Lamrani', 'prenom' => 'Jamal', 'email' => 'j.lamrani@uit.ac.ma'],
+            ['nom_fr' => 'Zahraoui', 'prenom' => 'Imane', 'email' => 'i.zahraoui@uit.ac.ma'],
+            ['nom_fr' => 'Boukhari', 'prenom' => 'Noureddine', 'email' => 'n.boukhari@uit.ac.ma'],
+            ['nom_fr' => 'Sabri', 'prenom' => 'Hanane', 'email' => 'h.sabri@uit.ac.ma'],
+            ['nom_fr' => 'Amraoui', 'prenom' => 'Fouad', 'email' => 'f.amraoui@uit.ac.ma'],
         ];
 
         foreach ($professors as $index => $prof) {

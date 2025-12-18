@@ -18,19 +18,28 @@ class CommunicationController extends Controller
         return view('communications.create');
     }
 
+
     public function store(Request $request)
     {
+        \Log::info('Communication store method called', [
+            'data' => $request->all(),
+            'user_id' => auth()->id()
+        ]);
+
         $validated = $request->validate([
             'titre' => 'required|string|max:255',
-            'evenement' => 'required|string|max:255',
             'annee' => 'required|integer|min:1900|max:' . (date('Y') + 1),
             'lien' => 'nullable|url|max:255',
             'doi' => 'nullable|string|max:255',
         ]);
 
+        \Log::info('Validation passed', ['validated' => $validated]);
+
         $communication = new Communication($validated);
         $communication->user_id = auth()->id();
         $communication->save();
+
+        \Log::info('Communication saved', ['id' => $communication->id]);
 
         return redirect()->route('communications.index')
             ->with('success', 'Communication créée avec succès');
@@ -53,7 +62,6 @@ class CommunicationController extends Controller
 
         $validated = $request->validate([
             'titre' => 'required|string|max:255',
-            'evenement' => 'required|string|max:255',
             'annee' => 'required|integer|min:1900|max:' . (date('Y') + 1),
             'lien' => 'nullable|url|max:255',
             'doi' => 'nullable|string|max:255',

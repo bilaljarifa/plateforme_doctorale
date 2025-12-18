@@ -46,7 +46,7 @@ Route::middleware(['auth'])->group(function () {
     // Réinscription
     Route::get('/reinscription', [App\Http\Controllers\ReinscriptionController::class, 'index'])->name('reinscription.index');
     Route::post('/reinscription', [App\Http\Controllers\ReinscriptionController::class, 'store'])->name('reinscription.store');
-    Route::post('/reinscription/confirm', [App\Http\Controllers\ReinscriptionController::class, 'confirm'])->name('reinscription.confirm');
+
     Route::get('/reinscription/{reinscription_id}/download-receipt', [App\Http\Controllers\ReinscriptionController::class, 'downloadReceipt'])->name('reinscription.download-receipt');
     Route::get('/articles/count', [App\Http\Controllers\ReinscriptionController::class, 'articleCount'])->name('articles.count');
 });

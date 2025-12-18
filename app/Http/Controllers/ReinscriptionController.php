@@ -16,8 +16,38 @@ class ReinscriptionController extends Controller
         // Nettoyer les données de session de réinscription périmées
         request()->session()->forget('reinscription_temp');
         
-        $user = auth()->user()->load(['these.sujet', 'these.directeur', 'these.laboratoire', 'doctorantProfile']);
-        return view('reinscription.index', compact('user'));
+        $user = auth()->user()->load(['these.sujet', 'these.directeur', 'these.laboratoire', 'these.coDirecteur', 'these.ced', 'these.ped', 'these.etablissement', 'doctorantProfile']);
+        $articles = Article::where('user_id', auth()->id())->get();
+        $communications = Communication::where('user_id', auth()->id())->get();
+        
+        // Check Profile Completeness
+        $doctorantProfile = $user->doctorantProfile;
+        $isProfileComplete = $doctorantProfile && 
+            $doctorantProfile->nom_arabe && 
+            $doctorantProfile->prenom_arabe && 
+            $doctorantProfile->cin && 
+            $doctorantProfile->cne && 
+            $doctorantProfile->date_naissance && 
+            $doctorantProfile->telephone && 
+            $doctorantProfile->genre && 
+            $doctorantProfile->situation_familiale && 
+            $doctorantProfile->situation_administrative;
+
+        // Check These Completeness
+        $these = $user->these;
+        $isTheseComplete = $these && 
+            $these->apogee && 
+            $these->centre_etudes_doctorales_id && 
+            $these->formations_doctorales_id && 
+            $these->sujet_id && 
+            $these->annee_inscription && 
+            $these->annee_premiere_inscription && 
+            $these->etablissement_id && 
+            $these->laboratoire_id && 
+            $these->directeur_these_id && 
+            $these->date_prevue_soutenance;
+
+        return view('reinscription.index', compact('user', 'articles', 'communications', 'isProfileComplete', 'isTheseComplete'));
     }
 
     public function articleCount()
@@ -27,14 +57,12 @@ class ReinscriptionController extends Controller
     }
 
     /**
-     * Enregistrer les données de réinscription et afficher l'écran de révision
+     * Enregistrer les données de réinscription directement et afficher le reçu
      */
     public function store(Request $request)
     {
         try {
             $validated = $request->validate([
-                'annee_inscription' => 'required|in:2,3,4,5,6',
-                'rapport_file' => 'required|file|mimes:pdf|max:5120',
                 'thesis_progress' => 'required|string|min:10|max:5000',
                 'directeur_valide' => 'accepted',
                 'derniere_publication' => 'nullable|string|max:255',
@@ -42,36 +70,25 @@ class ReinscriptionController extends Controller
 
             $annee = date('Y') . '-' . (date('Y') + 1);
 
-            $rapportPath = null;
-            if ($request->hasFile('rapport_file')) {
-                $file = $request->file('rapport_file');
-                $rapportPath = $file->store('reinscriptions', 'public');
-            }
-
-            // Store temporarily in session to pass to review screen
-            $request->session()->put([
-                'reinscription_temp' => [
-                    'annee_academique' => $annee,
-                    'annee_inscription' => $validated['annee_inscription'],
-                    'rapport_path' => $rapportPath,
-                    'thesis_progress' => $validated['thesis_progress'],
-                    'derniere_publication' => $validated['derniere_publication'] ?? null,
-                ]
+            // Créer directement l'enregistrement de réinscription
+            $reinscription = Reinscription::create([
+                'user_id' => auth()->id(),
+                'annee_academique' => $annee,
+                'annee_inscription' => null,
+                'rapport_path' => null,
+                'thesis_progress' => $validated['thesis_progress'],
+                'derniere_publication' => $validated['derniere_publication'] ?? null,
+                'directeur_valide' => true,
             ]);
 
-            // Charger les données utilisateur pour l'écran de révision
-            $user = auth()->user()->load(['these.sujet', 'these.directeur', 'these.laboratoire', 'doctorantProfile']);
-            $articles = Article::where('user_id', auth()->id())->get();
-            $communications = Communication::where('user_id', auth()->id())->get();
+            // Charger les données pour affichage
+            $user = auth()->user()->load(['these.sujet', 'these.directeur', 'these.laboratoire', 'these.coDirecteur', 'these.ced', 'these.ped', 'these.etablissement', 'doctorantProfile']);
 
-            return view('reinscription.review', [
+            // Rediriger directement vers la page de reçu (PDF sera généré au téléchargement)
+            return view('reinscription.receipt-success', [
                 'user' => $user,
-                'articles' => $articles,
-                'communications' => $communications,
-                'thesis_progress' => $validated['thesis_progress'],
-                'annee_inscription' => $validated['annee_inscription'],
-                'annee_academique' => $annee,
-                'rapport_file' => $rapportPath,
+                'reinscription' => $reinscription,
+                'annee_academique' => $reinscription->annee_academique,
             ]);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -81,87 +98,7 @@ class ReinscriptionController extends Controller
         }
     }
 
-    /**
-     * Confirmer la réinscription et générer automatiquement le reçu PDF
-     * Cette méthode est appelée après que l'utilisateur a vérifié ses informations
-     */
-    public function confirm(Request $request)
-    {
-        try {
-            // Récupérer les données temporaires stockées en session
-            $tempData = $request->session()->get('reinscription_temp');
 
-            // Vérifier si les données de session existent encore
-            if (!$tempData) {
-                return redirect()->route('reinscription.index')->with('error', 'Session expirée. Veuillez recommencer.');
-            }
-
-            // Créer l'enregistrement de réinscription dans la base de données
-            $reinscription = Reinscription::create([
-                'user_id' => auth()->id(),                                      // ID de l'utilisateur connecté
-                'annee_academique' => $tempData['annee_academique'],            // Ex: 2025-2026
-                'annee_inscription' => $tempData['annee_inscription'],          // Ex: 2, 3, 4, 5, 6
-                'rapport_path' => $tempData['rapport_path'],                    // Chemin du rapport d'activité
-                'thesis_progress' => $tempData['thesis_progress'],              // Description de l'avancement
-                'derniere_publication' => $tempData['derniere_publication'] ?? null,  // Publication récente (optionnelle)
-                'directeur_valide' => true,                                     // Validation automatique du directeur
-            ]);
-
-            // Charger toutes les données nécessaires pour le PDF
-            // 1. Charger le profil de l'utilisateur avec ses relations (thèse, directeur, laboratoire, profil doctorant)
-            $user = auth()->user()->load(['these.sujet', 'these.directeur', 'these.laboratoire', 'doctorantProfile']);
-            
-            // 2. Récupérer tous les articles de l'utilisateur
-            $articles = Article::where('user_id', auth()->id())->get();
-            
-            // 3. Récupérer toutes les communications de l'utilisateur
-            $communications = Communication::where('user_id', auth()->id())->get();
-
-            // Générer le PDF et le sauvegarder automatiquement dans le stockage
-            try {
-                // Créer le PDF à partir de la vue 'reinscription.receipt' avec toutes les données
-                $pdf = Pdf::loadView('reinscription.receipt', [
-                    'user' => $user,                                            // Données utilisateur
-                    'reinscription' => $reinscription,                          // Données réinscription
-                    'articles' => $articles,                                    // Liste des articles
-                    'communications' => $communications,                        // Liste des communications
-                    'annee_academique' => $reinscription->annee_academique,    // Année académique
-                ]);
-
-                // Créer un nom de fichier unique pour le PDF
-                // Format: recu_reinscription_{user_id}_{reinscription_id}.pdf
-                $filename = 'recu_reinscription_' . auth()->id() . '_' . $reinscription->id . '.pdf';
-                
-                // Définir le chemin de stockage dans le dossier public
-                $pdfPath = 'reinscriptions/receipts/' . $filename;
-                
-                // Sauvegarder le PDF dans storage/app/public/reinscriptions/receipts/
-                Storage::disk('public')->put($pdfPath, $pdf->output());
-                
-                // Mettre à jour l'enregistrement de réinscription avec le chemin du PDF
-                // Cela permet de télécharger le PDF directement sans le regénérer
-                $reinscription->update(['receipt_pdf_path' => $pdfPath]);
-
-            } catch (\Exception $pdfError) {
-                // Si la génération du PDF échoue, continuer quand même (ne pas bloquer la réinscription)
-                // L'utilisateur pourra régénérer le PDF plus tard via le bouton de téléchargement
-            }
-
-            // Nettoyer les données temporaires de la session
-            $request->session()->forget('reinscription_temp');
-
-            // Rediriger vers la page de succès avec option de téléchargement du PDF
-            return view('reinscription.receipt-success', [
-                'user' => $user,
-                'reinscription' => $reinscription,
-                'annee_academique' => $reinscription->annee_academique,
-            ]);
-
-        } catch (\Exception $e) {
-            // En cas d'erreur générale, retourner à la page précédente avec un message d'erreur
-            return back()->with('error', 'Erreur lors de la confirmation: ' . $e->getMessage());
-        }
-    }
 
     /**
      * Télécharger le reçu PDF de réinscription
@@ -194,7 +131,7 @@ class ReinscriptionController extends Controller
             // Si le PDF n'a pas été sauvegardé (anciennes réinscriptions ou erreur), le générer à la volée
             
             // Charger toutes les données nécessaires pour générer le PDF
-            $user = auth()->user()->load(['these.sujet', 'these.directeur', 'these.laboratoire', 'doctorantProfile']);
+            $user = auth()->user()->load(['these.sujet', 'these.directeur', 'these.laboratoire', 'these.ced', 'these.ped', 'these.etablissement', 'doctorantProfile']);
             $articles = Article::where('user_id', auth()->id())->get();
             $communications = Communication::where('user_id', auth()->id())->get();
 

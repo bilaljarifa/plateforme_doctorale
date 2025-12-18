@@ -10,9 +10,9 @@
                 </a>
             </div>
 
-            <!-- Center: Doctoral Cycle Info -->
+            <!-- Center: University Name -->
             <div class="navbar-center">
-                <div class="cycle-name">{{ __('messages.doctoral_cycle') }}</div>
+                <div class="cycle-name">Université Ibn Tofail | جامعة ابن طفيل</div>
             </div>
 
             <!-- Right: Ministry Logo & Language -->

@@ -3,9 +3,9 @@
 return [
     // Navigation
     'dashboard' => 'Dashboard',
-    'my_thesis' => 'My Thesis',
-    'my_articles' => 'My Articles',
-    'my_communications' => 'My Communications',
+    'my_thesis' => 'Thesis',
+    'my_articles' => 'Articles',
+    'my_communications' => 'Communications',
     'reinscription' => 'Re-registration',
     'logout' => 'Logout',
     'doctoral_cycle' => 'Doctoral Cycle 2025-2026',
@@ -100,7 +100,7 @@ return [
     'validation' => 'Validation',
     'confirmed' => 'Confirmed',
     'back' => 'Back',
-    'confirm_and_submit' => 'Confirm and Submit',
+    'confirm_and_submit' => 'Register (PDF)',
     'processing' => 'Processing...',
     'thesis_year' => 'Thesis Year',
     'academic_year_info' => 'Academic Year',

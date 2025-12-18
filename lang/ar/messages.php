@@ -3,9 +3,9 @@
 return [
     // Navigation
     'dashboard' => 'لوحة القيادة',
-    'my_thesis' => 'أطروحتي',
-    'my_articles' => 'مقالاتي',
-    'my_communications' => 'مداخلاتي',
+    'my_thesis' => 'الأطروحة',
+    'my_articles' => 'المقالات',
+    'my_communications' => 'المداخلات',
     'reinscription' => 'إعادة التسجيل',
     'logout' => 'تسجيل الخروج',
     'doctoral_cycle' => 'سلك الدكتوراه 2025-2026',

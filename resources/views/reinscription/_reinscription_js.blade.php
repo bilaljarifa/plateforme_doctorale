@@ -67,38 +67,42 @@
             fileName.textContent = 'Fichier sélectionné: ' + file.name + ' (' + (file.size / 1024).toFixed(2) + ' KB)';
             filePreview.classList.remove('hidden');
         } else {
-            filePreview.classList.add('hidden');
+            if(filePreview) filePreview.classList.add('hidden');
         }
 
         // Check derogation
         if(yearSelected && (selectYear.value === '4' || selectYear.value === '5' || selectYear.value === '6')){
-            derogationAlert.classList.remove('hidden');
+            if(derogationAlert) derogationAlert.classList.remove('hidden');
         } else {
-            derogationAlert.classList.add('hidden');
+            if(derogationAlert) derogationAlert.classList.add('hidden');
         }
 
-        // Enable/disable submit
-        if(hasFile && isChecked && yearSelected && hasThesisProgress){
+        // Read completeness status
+        const completenessDiv = document.getElementById('completeness-status');
+        const isProfileComplete = completenessDiv && completenessDiv.dataset.profile === '1';
+        const isTheseComplete = completenessDiv && completenessDiv.dataset.these === '1';
+
+        // Enable/disable submit - Only require thesis progress, checkbox, and completeness
+        // File and year are optional since those fields were removed
+        if(isChecked && hasThesisProgress && isProfileComplete && isTheseComplete){
             if(submitBtn) {
                 submitBtn.disabled = false;
                 submitBtn.style.opacity = '1';
                 submitBtn.style.cursor = 'pointer';
-                submitBtn.style.backgroundColor = '#050372';
                 submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-                console.log('✅ Button ENABLED - All conditions met!');
+                console.log('✅ Button ENABLED - All required conditions met!');
             }
         } else {
             if(submitBtn) {
                 submitBtn.disabled = true;
                 submitBtn.style.opacity = '0.5';
                 submitBtn.style.cursor = 'not-allowed';
-                submitBtn.style.backgroundColor = '#050372';
                 submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
                 console.log('❌ Button DISABLED - Missing:',
-                    !hasFile ? 'File' : '',
                     !isChecked ? 'Checkbox' : '',
-                    !yearSelected ? 'Year' : '',
-                    !hasThesisProgress ? 'Thesis Progress' : ''
+                    !hasThesisProgress ? 'Thesis Progress' : '',
+                    !isProfileComplete ? 'Profile Incomplete' : '',
+                    !isTheseComplete ? 'Thesis Incomplete' : ''
                 );
             }
         }
