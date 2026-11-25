@@ -1,0 +1,631 @@
+.doctoral-portal {
+    --portal-sidebar-width: 210px;
+    --portal-masthead-height: 72px;
+    --portal-toolbar-height: 42px;
+    --portal-navy: #213770;
+    --portal-line: #e0e5ed;
+    --portal-bg: #f2f4f7;
+    margin: 0;
+    background: var(--portal-bg);
+    color: var(--doctoral-ink);
+    font-family: var(--doctoral-sans);
+    -webkit-font-smoothing: antialiased;
+}
+
+.doctoral-portal:lang(ar),
+.doctoral-portal [lang="ar"] {
+    font-family: "Noto Sans Arabic", var(--doctoral-sans);
+}
+
+.portal-shell {
+    display: grid;
+    grid-template-columns: var(--portal-sidebar-width) minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+        "sidebar header"
+        "sidebar main";
+    min-height: 100svh;
+}
+
+.portal-header {
+    grid-area: header;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    min-width: 0;
+}
+
+.portal-masthead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: var(--portal-masthead-height);
+    padding: 6px 20px;
+    background: var(--portal-navy);
+    color: #fff;
+}
+
+.portal-university {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-width: 0;
+    color: inherit;
+    text-decoration: none;
+}
+
+.portal-university:hover {
+    color: #fff;
+}
+
+.portal-university-logo {
+    width: 62px;
+    height: auto;
+    flex: 0 0 auto;
+    filter: brightness(0) invert(1);
+}
+
+.portal-university > span {
+    display: grid;
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+.portal-university [lang="ar"] {
+    justify-self: start;
+}
+
+.portal-ministry {
+    display: block;
+    flex: 0 1 auto;
+    min-width: 0;
+    width: clamp(132px, 15vw, 205px);
+    height: 50px;
+    object-fit: contain;
+    object-position: right center;
+}
+
+.doctoral-portal .portal-masthead :focus-visible {
+    outline-color: #d5e3ff;
+}
+
+.portal-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    min-height: var(--portal-toolbar-height);
+    padding-inline: 13px;
+    border-bottom: 1px solid var(--portal-line);
+    background: white;
+}
+
+.portal-language,
+.portal-account {
+    position: relative;
+}
+
+.portal-language summary,
+.portal-account summary {
+    display: flex;
+    align-items: center;
+    border-radius: 6px;
+    cursor: pointer;
+    list-style: none;
+}
+
+.portal-language summary::-webkit-details-marker,
+.portal-account summary::-webkit-details-marker {
+    display: none;
+}
+
+.portal-language summary {
+    gap: 7px;
+    min-height: 36px;
+    padding: 3px 8px;
+    color: #344258;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.portal-language summary .bi-globe2 {
+    color: #2b568d;
+    font-size: 15px;
+}
+
+.portal-language summary .bi-chevron-down,
+.portal-account-chevron {
+    font-size: 10px;
+}
+
+.portal-language summary:hover,
+.portal-language[open] summary {
+    background: #eff3f8;
+    color: var(--portal-navy);
+}
+
+.portal-language-menu,
+.portal-account-menu {
+    position: absolute;
+    z-index: 2;
+    display: grid;
+    min-width: 142px;
+    padding: 4px;
+    border: 1px solid var(--portal-line);
+    border-radius: 8px;
+    background: white;
+    box-shadow: 0 8px 22px rgba(34, 52, 81, 0.14);
+}
+
+.portal-language-menu {
+    inset: calc(100% + 7px) 0 auto auto;
+}
+
+.portal-language-menu a,
+.portal-logout {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    width: 100%;
+    padding: 7px 9px;
+    border: 0;
+    border-radius: 5px;
+    background: transparent;
+    color: #344258;
+    font-size: 13px;
+    text-align: left;
+    text-decoration: none;
+}
+
+.portal-language-menu a:hover,
+.portal-language-menu [aria-current="true"],
+.portal-logout:hover {
+    background: #edf2fa;
+    color: var(--portal-navy);
+}
+
+.portal-sidebar {
+    grid-area: sidebar;
+    position: sticky;
+    top: 0;
+    z-index: 21;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    align-self: start;
+    height: 100svh;
+    min-width: 0;
+    padding: 0 8px 8px;
+    border-right: 1px solid var(--portal-line);
+    background: white;
+}
+
+.portal-product {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 112px;
+    padding: 0 8px 8px;
+    color: #123f82;
+    font-size: 29px;
+    font-weight: 700;
+    letter-spacing: -0.065em;
+    text-decoration: none;
+}
+
+.portal-product:hover {
+    color: var(--portal-navy);
+}
+
+.portal-product i {
+    align-self: center;
+    font-size: 29px;
+    line-height: 1;
+}
+
+.portal-navigation {
+    min-width: 0;
+    overflow: auto;
+    padding: 6px 2px;
+}
+
+.portal-nav-heading {
+    margin: 0 6px 7px;
+    color: #67798c;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.045em;
+    text-transform: uppercase;
+}
+
+.portal-nav-list {
+    display: grid;
+    gap: 2px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.portal-nav-list a {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 39px;
+    padding: 5px 9px;
+    border-radius: 5px;
+    color: #526579;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.portal-nav-list a:hover {
+    background: #f3f6f9;
+    color: var(--portal-navy);
+}
+
+.portal-nav-list a:focus-visible {
+    outline-offset: -2px;
+}
+
+.portal-nav-list [aria-current="page"] {
+    background: #e9eef4;
+    color: var(--portal-navy);
+    font-weight: 700;
+}
+
+.portal-nav-list [aria-current="page"]::before {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    width: 4px;
+    border-start-start-radius: 5px;
+    border-end-start-radius: 5px;
+    background: var(--portal-navy);
+    content: "";
+}
+
+.portal-nav-list i {
+    flex: 0 0 15px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.portal-account {
+    min-width: 0;
+}
+
+.portal-account summary {
+    gap: 7px;
+    min-height: 48px;
+    padding: 5px;
+    border: 1px solid #e1e9f2;
+    background: #f0f5fa;
+    color: #31445f;
+}
+
+.portal-account summary:hover,
+.portal-account[open] summary {
+    background: #e7effa;
+}
+
+.portal-avatar {
+    display: grid;
+    flex: 0 0 auto;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border: 1px solid #e4edfc;
+    border-radius: 50%;
+    background: white;
+    color: #315f9e;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.portal-account-details {
+    display: grid;
+    flex: 1;
+    gap: 1px;
+    min-width: 0;
+    font-size: 11px;
+}
+
+.portal-account-details > * {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.portal-account-details > span {
+    color: #5f7185;
+    font-size: 10px;
+}
+
+.portal-account-menu {
+    inset: auto 0 calc(100% + 6px);
+}
+
+.portal-account-menu form {
+    margin: 0;
+}
+
+.doctoral-portal .app-main {
+    grid-area: main;
+    min-width: 0;
+    padding: 0 clamp(8px, 1vw, 17px) 20px;
+}
+
+.doctoral-portal .app-main > .min-h-screen {
+    min-height: 0;
+    background: transparent;
+}
+
+.portal-profile {
+    min-height: calc(100svh - var(--portal-masthead-height) - var(--portal-toolbar-height));
+    padding: 14px clamp(12px, 1.65vw, 25px) 24px;
+    border-inline: 1px solid #e7ebf1;
+    background: white;
+    box-shadow: 0 2px 8px rgba(33, 55, 89, 0.045);
+}
+
+.portal-profile-required {
+    margin: 0 0 21px;
+    color: #5f7083;
+    font-size: 12px;
+}
+
+.portal-profile-card {
+    min-width: 0;
+    margin: 0;
+    padding: 9px 14px 15px;
+    border: 1px solid #dfe5ed;
+    border-radius: 8px;
+}
+
+.portal-profile-card legend {
+    float: none;
+    width: auto;
+    margin: 0;
+    padding-inline: 6px;
+    color: #394a61;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.portal-profile-fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px 13px;
+}
+
+.portal-field {
+    display: grid;
+    grid-template-rows: 1fr auto;
+    gap: 4px;
+    min-width: 0;
+}
+
+.portal-field-ar label {
+    text-align: right;
+}
+
+.portal-field label {
+    align-self: end;
+    color: #344358;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.5;
+}
+
+.portal-field label span[lang="ar"]:not(:only-child) {
+    margin-inline-start: 3px;
+    color: #526479;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.profile-required {
+    color: #b3433e;
+}
+
+.portal-field input,
+.portal-field select {
+    width: 100%;
+    min-width: 0;
+    min-height: 34px;
+    padding: 5px 8px;
+    border: 1px solid #d8e1e8;
+    border-radius: 5px;
+    background: #f7f9fa;
+    color: #27364b;
+    font: inherit;
+    font-size: 13px;
+}
+
+.portal-field :is(input, select):focus {
+    border-color: #4a75bd;
+    background: white;
+    box-shadow: 0 0 0 2px rgba(47, 93, 174, 0.13);
+}
+
+.portal-profile-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 15px;
+}
+
+.doctoral-portal .app-main :is(.btn-primary, .btn-add-article, .btn-add-communication) {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    border: 1px solid var(--doctoral-blue);
+    border-radius: 7px;
+    background: var(--doctoral-blue);
+    color: white;
+    font-weight: 700;
+}
+
+.doctoral-portal .app-main :is(.btn-primary, .btn-add-article, .btn-add-communication):hover {
+    border-color: var(--portal-navy);
+    background: var(--portal-navy);
+}
+
+.portal-profile-actions .btn {
+    min-height: 39px;
+    padding-inline: 15px;
+    font-size: 13px;
+}
+
+.doctoral-portal .app-main :is(.card, .form-control, .form-select) {
+    border-color: var(--portal-line);
+}
+
+.doctoral-portal .app-main :is(.form-control, .form-select):focus {
+    border-color: #4a75bd;
+    box-shadow: 0 0 0 2px rgba(47, 93, 174, 0.13);
+}
+
+.doctoral-portal .app-main .profile-title {
+    color: var(--doctoral-ink);
+    font-size: clamp(22px, 3vw, 30px);
+    font-weight: 700;
+}
+
+.doctoral-portal .power-grid-table {
+    border: 1px solid var(--portal-line);
+    border-radius: 8px;
+    background: white;
+}
+
+.doctoral-portal .power-grid-table thead {
+    background: #edf2fa;
+}
+
+.doctoral-portal .power-grid-table td {
+    border-bottom-color: var(--portal-line);
+}
+
+.doctoral-portal select[wire\:model\.lazy="setUp.footer.perPage"] {
+    color: var(--doctoral-ink);
+}
+
+@media (max-width: 800px) {
+    .doctoral-portal {
+        --portal-masthead-height: 60px;
+        --portal-toolbar-height: 39px;
+    }
+
+    .portal-university-logo {
+        width: 49px;
+    }
+
+    .portal-university > span {
+        font-size: 12px;
+    }
+
+    .portal-ministry {
+        width: clamp(112px, 22vw, 148px);
+        height: 41px;
+    }
+
+    .portal-shell {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: auto auto 1fr;
+        grid-template-areas:
+            "header"
+            "sidebar"
+            "main";
+    }
+
+    .portal-sidebar {
+        position: relative;
+        z-index: 19;
+        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-rows: auto auto;
+        grid-template-areas:
+            "product account"
+            "links links";
+        gap: 5px 12px;
+        align-items: center;
+        height: auto;
+        padding: 6px 10px;
+        border-right: 0;
+        border-bottom: 1px solid var(--portal-line);
+    }
+
+    .portal-product {
+        grid-area: product;
+        min-height: 34px;
+        padding: 0 4px;
+        font-size: 20px;
+    }
+
+    .portal-product i {
+        font-size: 20px;
+    }
+
+    .portal-navigation {
+        grid-area: links;
+        padding: 0;
+    }
+
+    .portal-nav-heading {
+        display: none;
+    }
+
+    .portal-nav-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 3px;
+    }
+
+    .portal-nav-list a {
+        min-height: 37px;
+    }
+
+    .portal-account {
+        grid-area: account;
+    }
+
+    .portal-account summary {
+        min-height: 34px;
+        padding: 3px 6px;
+    }
+
+    .portal-account-details {
+        max-width: 112px;
+    }
+
+    .portal-account-menu {
+        inset: calc(100% + 6px) 0 auto auto;
+    }
+
+    .portal-avatar {
+        width: 24px;
+        height: 24px;
+    }
+
+    .portal-profile {
+        min-height: 0;
+    }
+}
+
+@media (max-width: 620px) {
+    .portal-profile-fields {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .portal-field input,
+    .portal-field select {
+        min-height: 40px;
+    }
+
+    .portal-masthead {
+        padding-inline: 9px;
+    }
+
+    .portal-field-ar label {
+        text-align: left;
+    }
+}

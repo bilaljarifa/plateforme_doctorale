@@ -49,16 +49,12 @@
             :setUp="$setUp"
         />
         @if(is_null($data) || count($data) === 0)
-            <th>
-                <tr class="{{ $theme->table->trBodyClass }}" style="{{ $theme->table->trBodyStyle }}">
-                    <td class="{{ $theme->table->tdBodyClass }}" style="{{ $theme->table->tdBodyStyle }}" colspan="{{ (($checkbox) ? 1:0)
-                                    + ((isset($actions)) ? 1: 0)
-                                    + (count($columns))
-                                    }}">
-                        <span>{{ trans('livewire-powergrid::datatable.labels.no_data') }}</span>
-                    </td>
-                </tr>
-            </th>
+            <tr class="{{ $theme->table->trBodyClass }}" style="{{ $theme->table->trBodyStyle }}">
+                <td class="power-grid-empty {{ $theme->table->tdBodyClass }}" style="{{ $theme->table->tdBodyStyle }}"
+                    colspan="{{ (int) $checkbox + count($actions ?? []) + count($columns) }}">
+                    {{ trans('livewire-powergrid::datatable.labels.no_data') }}
+                </td>
+            </tr>
         @else
             @includeWhen($headerTotalColumn, 'livewire-powergrid::components.table-header')
 

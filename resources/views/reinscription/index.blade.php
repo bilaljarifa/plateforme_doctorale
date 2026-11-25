@@ -1,360 +1,205 @@
 @extends('layouts.dashboard')
 
+@section('title', __('messages.reinscription') . ' · ' . config('app.name'))
+
 @section('content')
-<div class="reinscription-container">
-    <div class="py-4">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <!-- Completeness Check Logic -->
-            <div id="completeness-status" 
-                 data-profile="{{ $isProfileComplete ? '1' : '0' }}" 
-                 data-these="{{ $isTheseComplete ? '1' : '0' }}"
-                 class="hidden">
-            </div>
+@php
+    $profile = $user->doctorantProfile;
+    $these = $user->these;
+    $profileFields = [
+        ['Nom (Fr)', $user->name],
+        ['Prénom (Fr)', $user->prenom],
+        ['الإسم العائلي', $profile?->nom_arabe, 'ar'],
+        ['الإسم الشخصي', $profile?->prenom_arabe, 'ar'],
+        ['CIN', $profile?->cin],
+        ['CNE', $profile?->cne],
+        ['Date de naissance', $profile?->date_naissance],
+        ['Email', $user->email],
+        ['Téléphone', $profile?->telephone],
+        ['Genre', $profile?->genre],
+        ['Situation familiale', $profile?->situation_familiale],
+        ['Situation administrative', $profile?->situation_administrative],
+        ['ORCID', $profile?->orcid],
+    ];
+    $thesisFields = [
+        ['Apogée', $these?->apogee],
+        ['Centre d’études doctorales', $these?->ced?->intitule],
+        ['Formation doctorale', $these?->ped?->intitule],
+        ['Sujet de thèse', $these?->sujet?->intitule_sujet],
+        ['Année d’inscription', $these?->annee_inscription],
+        ['Année de première inscription', $these?->annee_premiere_inscription],
+        ['Établissement', $these?->etablissement?->intitulefr],
+        ['Laboratoire', $these?->laboratoire?->intitule],
+        ['Directeur de thèse', trim(($these?->directeur?->nom_fr ?? '') . ' ' . ($these?->directeur?->prenom ?? ''))],
+    ];
+    if ($these?->co_directeur_type && $these->co_directeur_type !== 'non') {
+        $coDirector = $these->co_directeur_type === 'interne'
+            ? trim(($these->coDirecteur?->nom_fr ?? '') . ' ' . ($these->coDirecteur?->prenom ?? '')) . ' (Interne)'
+            : trim(($these->co_directeur_nom ?? '') . ' ' . ($these->co_directeur_prenom ?? '')) . ' (' . ($these->co_directeur_etablissement ?? '') . ')';
+        $thesisFields[] = ['Co-directeur', $coDirector];
+    }
+    $thesisFields[] = ['Date prévue de soutenance', $these?->date_prevue_soutenance];
 
-            <!-- TWO COLUMN LAYOUT -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    $information = [
+        ['icon' => 'person', 'title' => __('messages.profile'), 'complete' => $isProfileComplete, 'fields' => $profileFields],
+        ['icon' => 'mortarboard', 'title' => __('messages.my_thesis'), 'complete' => $isTheseComplete, 'fields' => $thesisFields],
+    ];
+    $publications = [
+        ['icon' => 'file-earmark-text', 'title' => __('messages.articles'), 'records' => $articles, 'empty' => __('messages.no_articles')],
+        ['icon' => 'megaphone', 'title' => __('messages.communications'), 'records' => $communications, 'empty' => __('messages.no_communications')],
+    ];
+@endphp
 
-                <!-- ZONE A: Comprehensive Information (Left Column) -->
-                <div class="space-y-3 overflow-y-auto" style="max-height: 75vh;">
-                    
-                    <!-- PROFIL -->
-                    <details class="bg-white p-3 rounded-lg shadow-sm border border-gray-200">
-                        <summary class="text-sm font-semibold text-blue-700 cursor-pointer mb-2 hover:text-blue-900">PROFIL</summary>
-                        <div class="space-y-1.5 pl-2">
-                            <div><label class="block text-xs font-medium text-gray-600">Nom (Fr) <span class="text-red-600">*</span></label><input type="text" readonly value="{{ $user->name ?? 'N/A' }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" /></div>
-                            <div><label class="block text-xs font-medium text-gray-600">Prénom (Fr) <span class="text-red-600">*</span></label><input type="text" readonly value="{{ $user->prenom ?? 'N/A' }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" /></div>
-                            <div><label class="block text-xs font-medium text-gray-600">الإسم العائلي <span class="text-red-600">*</span></label><input type="text" readonly value="{{ optional($user->doctorantProfile)->nom_arabe ?? 'N/A' }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" dir="rtl" /></div>
-                            <div><label class="block text-xs font-medium text-gray-600">الإسم الشخصي <span class="text-red-600">*</span></label><input type="text" readonly value="{{ optional($user->doctorantProfile)->prenom_arabe ?? 'N/A' }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" dir="rtl" /></div>
-                            <div><label class="block text-xs font-medium text-gray-600">CIN <span class="text-red-600">*</span></label><input type="text" readonly value="{{ optional($user->doctorantProfile)->cin ?? 'N/A' }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" /></div>
-                            <div><label class="block text-xs font-medium text-gray-600">CNE <span class="text-red-600">*</span></label><input type="text" readonly value="{{ optional($user->doctorantProfile)->cne ?? 'N/A' }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" /></div>
-                            <div><label class="block text-xs font-medium text-gray-600">Date de naissance <span class="text-red-600">*</span></label><input type="text" readonly value="{{ optional($user->doctorantProfile)->date_naissance ?? 'N/A' }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" /></div>
-                            <div><label class="block text-xs font-medium text-gray-600">Email <span class="text-red-600">*</span></label><input type="text" readonly value="{{ $user->email ?? 'N/A' }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" /></div>
-                            <div><label class="block text-xs font-medium text-gray-600">Téléphone <span class="text-red-600">*</span></label><input type="text" readonly value="{{ optional($user->doctorantProfile)->telephone ?? 'N/A' }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" /></div>
-                            <div><label class="block text-xs font-medium text-gray-600">Genre <span class="text-red-600">*</span></label><input type="text" readonly value="{{ ucfirst(optional($user->doctorantProfile)->genre ?? 'N/A') }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" /></div>
-                            <div><label class="block text-xs font-medium text-gray-600">Situation Familiale <span class="text-red-600">*</span></label><input type="text" readonly value="{{ optional($user->doctorantProfile)->situation_familiale ?? 'N/A' }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" /></div>
-                            <div><label class="block text-xs font-medium text-gray-600">Situation Administrative <span class="text-red-600">*</span></label><input type="text" readonly value="{{ optional($user->doctorantProfile)->situation_administrative ?? 'N/A' }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" /></div>
-                            <div><label class="block text-xs font-medium text-gray-600">ORCID <span class="text-red-600">*</span></label><input type="text" readonly value="{{ optional($user->doctorantProfile)->orcid ?? 'N/A' }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" /></div>
-                        </div>
-                    </details>
-
-                    <!-- THÈSE -->
-                    <details class="bg-white p-3 rounded-lg shadow-sm border border-gray-200">
-                        <summary class="text-sm font-semibold text-blue-700 cursor-pointer mb-2 hover:text-blue-900">THÈSE</summary>
-                        <div class="space-y-1.5 pl-2">
-                            <div><label class="block text-xs font-medium text-gray-600">Apogée <span class="text-red-600">*</span></label><input type="text" readonly value="{{ optional($user->these)->apogee ?? 'N/A' }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" /></div>
-                            <div><label class="block text-xs font-medium text-gray-600">Centre Etudes Doctorales <span class="text-red-600">*</span></label><input type="text" readonly value="{{ optional(optional($user->these)->ced)->intitule ?? 'N/A' }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" /></div>
-                            <div><label class="block text-xs font-medium text-gray-600">Formations doctorales <span class="text-red-600">*</span></label><input type="text" readonly value="{{ optional(optional($user->these)->ped)->intitule ?? 'N/A' }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" /></div>
-                            <div><label class="block text-xs font-medium text-gray-600">Sujet de Thèse <span class="text-red-600">*</span></label><textarea readonly class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" rows="2">{{ optional(optional($user->these)->sujet)->intitule_sujet ?? 'N/A' }}</textarea></div>
-                            <div><label class="block text-xs font-medium text-gray-600">Année inscription <span class="text-red-600">*</span></label><input type="text" readonly value="{{ optional($user->these)->annee_inscription ?? 'N/A' }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" /></div>
-                            <div><label class="block text-xs font-medium text-gray-600">Année 1ère inscription <span class="text-red-600">*</span></label><input type="text" readonly value="{{ optional($user->these)->annee_premiere_inscription ?? 'N/A' }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" /></div>
-                            <div><label class="block text-xs font-medium text-gray-600">Etablissement <span class="text-red-600">*</span></label><input type="text" readonly value="{{ optional(optional($user->these)->etablissement)->intitulefr ?? 'N/A' }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" /></div>
-                            <div><label class="block text-xs font-medium text-gray-600">Laboratoire <span class="text-red-600">*</span></label><input type="text" readonly value="{{ optional(optional($user->these)->laboratoire)->intitule ?? 'N/A' }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" /></div>
-                            <div><label class="block text-xs font-medium text-gray-600">Directeur de thèse <span class="text-red-600">*</span></label><input type="text" readonly value="{{ optional(optional($user->these)->directeur)->nom_fr ?? 'N/A' }} {{ optional(optional($user->these)->directeur)->prenom ?? '' }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" /></div>
-                            @if(optional($user->these)->co_directeur_type && optional($user->these)->co_directeur_type !== 'non')
-                            <div><label class="block text-xs font-medium text-gray-600">Co-Directeur <span class="text-red-600">*</span></label>
-                                @if(optional($user->these)->co_directeur_type === 'interne')
-                                    <input type="text" readonly value="{{ optional(optional($user->these)->coDirecteur)->nom_fr ?? '' }} {{ optional(optional($user->these)->coDirecteur)->prenom ?? '' }} (Interne)" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" />
-                                @else
-                                    <input type="text" readonly value="{{ optional($user->these)->co_directeur_nom ?? '' }} {{ optional($user->these)->co_directeur_prenom ?? '' }} ({{ optional($user->these)->co_directeur_etablissement ?? '' }})" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" />
-                                @endif
-                            </div>
-                            @endif
-                            <div><label class="block text-xs font-medium text-gray-600">Date prévue soutenance <span class="text-red-600">*</span></label><input type="text" readonly value="{{ optional($user->these)->date_prevue_soutenance ?? 'N/A' }}" class="w-full px-2 py-1 bg-gray-50 border border-gray-200 rounded text-gray-700 text-xs" /></div>
-                        </div>
-                    </details>
-
-                    <!-- ARTICLES -->
-                    <details class="bg-white p-3 rounded-lg shadow-sm border border-gray-200">
-                        <summary class="text-sm font-semibold text-blue-700 cursor-pointer mb-2 hover:text-blue-900">ARTICLES ({{ $articles->count() }})</summary>
-                        @if($articles->count() > 0)
-                            <div class="space-y-2 pl-2 max-h-48 overflow-y-auto">
-                                @foreach($articles as $article)
-                                    <div class="p-2 bg-gray-50 border-l-2 border-blue-500 rounded text-xs">
-                                        <div class="font-semibold text-gray-800">{{ $article->titre }} <span class="text-red-600">*</span></div>
-                                        <div class="text-gray-600 mt-0.5">
-                                            <strong>Type:</strong> {{ ucfirst($article->type ?? 'N/A') }} <span class="text-red-600">*</span> | 
-                                            <strong>Année:</strong> {{ $article->annee ?? 'N/A' }} <span class="text-red-600">*</span>
-                                        </div>
-                                        @if($article->doi)<div class="text-gray-600">DOI: {{ $article->doi }}</div>@endif
-                                        @if($article->lien)<div class="text-gray-600 truncate">Lien: <a href="{{ $article->lien }}" target="_blank" class="text-blue-600">{{ Str::limit($article->lien, 30) }}</a></div>@endif
-                                    </div>
-                                @endforeach
-                            </div>
-                        @else
-                            <p class="text-xs text-gray-500 italic pl-2">Aucun article enregistré</p>
-                        @endif
-                    </details>
-
-                    <!-- COMMUNICATIONS -->
-                    <details class="bg-white p-3 rounded-lg shadow-sm border border-gray-200">
-                        <summary class="text-sm font-semibold text-blue-700 cursor-pointer mb-2 hover:text-blue-900">COMMUNICATIONS ({{ $communications->count() }})</summary>
-                        @if($communications->count() > 0)
-                            <div class="space-y-2 pl-2 max-h-48 overflow-y-auto">
-                                @foreach($communications as $communication)
-                                    <div class="p-2 bg-gray-50 border-l-2 border-green-500 rounded text-xs">
-                                        <div class="font-semibold text-gray-800">{{ $communication->titre }} <span class="text-red-600">*</span></div>
-                                        <div class="text-gray-600 mt-0.5"><strong>Année:</strong> {{ $communication->annee ?? 'N/A' }} <span class="text-red-600">*</span></div>
-                                        @if($communication->doi)<div class="text-gray-600">DOI: {{ $communication->doi }}</div>@endif
-                                        @if($communication->lien)<div class="text-gray-600 truncate">Lien: <a href="{{ $communication->lien }}" target="_blank" class="text-blue-600">{{ Str::limit($communication->lien, 30) }}</a></div>@endif
-                                    </div>
-                                @endforeach
-                            </div>
-                        @else
-                            <p class="text-xs text-gray-500 italic pl-2">Aucune communication enregistrée</p>
-                        @endif
-                    </details>
-                </div>
-
-                <!-- ZONE B: Form (Right Column) -->
-                <div class="bg-white p-4 rounded-lg shadow-sm">
-                    <h2 class="text-lg font-semibold text-green-700 border-b-2 border-green-600 pb-2 mb-4">Dossier d'Avancement</h2>
-
-                    <form action="{{ route('reinscription.store') }}\" method="POST" enctype="multipart/form-data" id="reinscriptionForm">
-                        @csrf
-
-                        <!-- Thesis Progress -->
-                        <div class="mb-4">
-                            <label for="thesis_progress" class="block text-xs font-medium text-gray-700 mb-1">
-                                État d'Avancement de la Thèse || تقدم الاطروحة <span class="text-red-600">*</span>
-                            </label>
-                            <textarea
-                                id="thesis_progress"
-                                name="thesis_progress"
-                                required
-                                rows="6"
-                                placeholder="Décrivez le progrès actuel de votre thèse, les chapitres complétés, les résultats obtenus, et les prochaines étapes..."
-                                class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            ></textarea>
-                            @error('thesis_progress') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
-                        </div>
-
-                        <!-- Certification Checkbox -->
-                        <div class="mb-4 pt-3 border-t">
-                            <div class="flex items-start gap-2">
-                                <input
-                                    id="directeur_valide"
-                                    name="directeur_valide"
-                                    type="checkbox"
-                                    value="1"
-                                    required
-                                    class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 mt-0.5"
-                                />
-                                <label for="directeur_valide" class="text-xs text-gray-700">
-                                    Je certifie l'exactitude des informations || أشهد بصحة المعلومات <span class="text-red-600">*</span>
-                                </label>
-                            </div>
-                            @error('directeur_valide') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
-                        </div>
-
-                        <input type="hidden" id="derniere_publication" name="derniere_publication" value="" />
-
-                        <!-- Submit Button -->
-                        <div class="flex justify-end pt-3 border-t">
-                            <button
-                                id="submitBtn"
-                                type="submit"
-                                disabled
-                                class="btn btn-primary"
-                                style="opacity: 0.5; cursor: not-allowed;"
-                            >
-                                Enregistrer
-                            </button>
-                        </div>
-                    </form>
-                </div>
+<section class="registration-page" aria-labelledby="registration-title">
+    <div class="registration-heading">
+        <div>
+            <nav class="registration-breadcrumb" aria-label="Fil d’Ariane">
+                <a href="{{ route('dashboard') }}"><i class="bi bi-house-door-fill" aria-hidden="true"></i> {{ __('messages.dashboard') }}</a>
+                <i class="bi bi-chevron-right" aria-hidden="true"></i>
+                <span aria-current="page">{{ __('messages.reinscription') }}</span>
+            </nav>
+            <h1 id="registration-title">{{ __('messages.reinscription_title') }}</h1>
+        </div>
+        <div class="registration-year">
+            <i class="bi bi-calendar3" aria-hidden="true"></i>
+            <div>
+                <span>{{ __('messages.academic_year') }}</span>
+                <strong>{{ date('Y') }}–{{ date('Y') + 1 }}</strong>
             </div>
         </div>
     </div>
-</div>
 
-<style>
-.reinscription-container {
-    background: #ffffff;
-    min-height: calc(100vh - 150px);
-    padding: 2rem 0;
-}
+    @if (session('error'))
+        <div class="registration-notice registration-error" role="alert">{{ session('error') }}</div>
+    @endif
 
-/* Card Styling */
-details, .bg-white {
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    transition: all 0.3s ease;
-}
+    @if (!$isProfileComplete || !$isTheseComplete)
+        <div class="registration-notice">
+            <i class="bi bi-info-circle" aria-hidden="true"></i>
+            <div>
+                <strong>Votre dossier est incomplet.</strong>
+                <p>Complétez les informations ci-dessous pour pouvoir enregistrer votre réinscription.</p>
+                <div class="registration-notice-links">
+                    @unless ($isProfileComplete)
+                        <a href="{{ route('dashboard') }}">Compléter le profil <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+                    @endunless
+                    @unless ($isTheseComplete)
+                        <a href="{{ route('these') }}">Compléter la thèse <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+                    @endunless
+                </div>
+            </div>
+        </div>
+    @endif
 
-details:hover, .bg-white:hover {
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    transform: translateY(-2px);
-}
+    <div class="registration-grid">
+        <section class="registration-card" aria-labelledby="registration-progress-title">
+            <header class="registration-card-header">
+                <span class="registration-icon" aria-hidden="true"><i class="bi bi-journal-check"></i></span>
+                <h2 id="registration-progress-title">{{ __('messages.progress_file') }}</h2>
+            </header>
 
-/* Details/Summary Styling */
-details summary {
-    list-style: none;
-    user-select: none;
-    background: linear-gradient(135deg, #f6f8fb 0%, #e9ecef 100%);
-    padding: 0.75rem;
-    border-radius: 0.5rem;
-    margin-bottom: 0.75rem;
-}
+            <form id="reinscriptionForm" class="registration-form" method="POST" action="{{ route('reinscription.store') }}"
+                data-profile-complete="{{ $isProfileComplete ? '1' : '0' }}"
+                data-thesis-complete="{{ $isTheseComplete ? '1' : '0' }}">
+                @csrf
 
-details summary::-webkit-details-marker {
-    display: none;
-}
+                <div class="registration-field">
+                    <label for="thesis_progress">{{ __('messages.thesis_progress') }} <span class="profile-required" aria-hidden="true">*</span></label>
+                    <textarea id="thesis_progress" name="thesis_progress" rows="7" minlength="10" maxlength="5000" required
+                        aria-describedby="registration-progress-help @error('thesis_progress') registration-progress-error @enderror"
+                        @error('thesis_progress') aria-invalid="true" @enderror
+                        placeholder="Décrivez les travaux réalisés, les résultats obtenus et les prochaines étapes.">{{ old('thesis_progress') }}</textarea>
+                    <div id="registration-progress-help" class="registration-field-help">
+                        <span>10 à 5 000 caractères</span>
+                        <span id="registration-progress-count" aria-hidden="true"></span>
+                    </div>
+                    @error('thesis_progress')
+                        <p id="registration-progress-error" class="registration-field-error" role="alert">{{ $message }}</p>
+                    @enderror
+                </div>
 
-details summary::before {
-    content: '▶';
-    display: inline-block;
-    margin-right: 0.5em;
-    transition: transform 0.3s ease;
-    font-size: 0.8em;
-}
+                <div class="registration-confirmation">
+                    <input id="directeur_valide" name="directeur_valide" type="checkbox" value="1" required @checked(old('directeur_valide')) @error('directeur_valide') aria-describedby="registration-certification-error" aria-invalid="true" @enderror>
+                    <label for="directeur_valide">
+                        {{ __('messages.certification') }}
+                        <span lang="ar" dir="rtl">أشهد بصحة المعلومات</span>
+                    </label>
+                </div>
+                @error('directeur_valide')
+                    <p id="registration-certification-error" class="registration-field-error" role="alert">{{ $message }}</p>
+                @enderror
 
-details[open] summary::before {
-    transform: rotate(90deg);
-}
+                <input type="hidden" id="derniere_publication" name="derniere_publication" value="{{ old('derniere_publication') }}">
 
-details summary:hover {
-    background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
-}
+                <div class="registration-actions">
+                    <button id="submitBtn" type="submit" class="btn btn-primary" disabled>
+                        <i class="bi bi-check2" aria-hidden="true"></i> {{ __('messages.save') }}
+                    </button>
+                </div>
+            </form>
+        </section>
 
-/* Form Section Header */
-h2 {
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-    color: white !important;
-    padding: 1rem;
-    border-radius: 0.5rem 0.5rem 0 0;
-    margin: -1rem -1rem 1rem -1rem;
-    border: none !important;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
+        <aside class="registration-card" aria-labelledby="registration-file-title">
+            <header class="registration-card-header">
+                <span class="registration-icon" aria-hidden="true"><i class="bi bi-folder2-open"></i></span>
+                <h2 id="registration-file-title">Votre dossier</h2>
+            </header>
 
-/* Input Fields */
-input[readonly], textarea[readonly] {
-    background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
-    border: 1px solid #e5e7eb;
-    transition: all 0.2s ease;
-}
+            @foreach ($information as $section)
+                <details class="registration-disclosure">
+                    <summary>
+                        <i class="bi bi-{{ $section['icon'] }}" aria-hidden="true"></i>
+                        <span class="registration-disclosure-title">{{ $section['title'] }}</span>
+                        <span class="registration-status {{ $section['complete'] ? 'registration-status-complete' : 'registration-status-pending' }}">
+                            {{ $section['complete'] ? 'Complet' : 'À compléter' }}
+                        </span>
+                        <i class="bi bi-chevron-down registration-chevron" aria-hidden="true"></i>
+                    </summary>
+                    <dl class="registration-facts">
+                        @foreach ($section['fields'] as $field)
+                            <div>
+                                <dt @if (isset($field[2])) lang="{{ $field[2] }}" dir="rtl" @endif>{{ $field[0] }}</dt>
+                                <dd dir="auto">{{ filled($field[1]) ? $field[1] : '—' }}</dd>
+                            </div>
+                        @endforeach
+                    </dl>
+                </details>
+            @endforeach
 
-textarea, input[type="text"]:not([readonly]) {
-    transition: all 0.3s ease;
-    border: 2px solid #e5e7eb;
-}
-
-textarea:focus, input[type="text"]:not([readonly]):focus {
-    outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-    transform: translateY(-1px);
-}
-
-/* Button Styling */
-.btn-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 0.5rem 1.5rem;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 0.875rem;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
-}
-
-.btn-primary:hover:not(:disabled) {
-    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
-}
-
-.btn-primary:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
-}
-
-/* Status Badges */
-.text-green-600 {
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-    color: white !important;
-    padding: 0.25rem 0.75rem;
-    border-radius: 9999px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);
-}
-
-.text-red-600 {
-    color: #dc2626;
-    font-weight: 600;
-}
-
-/* Article/Communication Cards */
-.border-l-2 {
-    transition: all 0.2s ease;
-}
-
-.border-l-2:hover {
-    background: white !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    transform: translateX(4px);
-}
-
-/* Scrollbar Styling */
-::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-}
-
-::-webkit-scrollbar-track {
-    background: #f1f5f9;
-    border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-}
-
-/* Responsive Design */
-@media (max-width: 1024px) {
-    .grid {
-        grid-template-columns: 1fr !important;
-    }
-    
-    .reinscription-container {
-        padding: 1rem 0;
-    }
-}
-
-/* Animation */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-details {
-    animation: fadeIn 0.3s ease;
-}
-
-/* Checkbox Styling */
-input[type="checkbox"] {
-    cursor: pointer;
-    accent-color: #667eea;
-}
-
-input[type="checkbox"]:checked {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
-</style>
+            @foreach ($publications as $section)
+                <details class="registration-disclosure">
+                    <summary>
+                        <i class="bi bi-{{ $section['icon'] }}" aria-hidden="true"></i>
+                        <span class="registration-disclosure-title">{{ $section['title'] }}</span>
+                        <span class="registration-status">{{ $section['records']->count() }}</span>
+                        <i class="bi bi-chevron-down registration-chevron" aria-hidden="true"></i>
+                    </summary>
+                    <div class="registration-records">
+                        @forelse ($section['records'] as $publication)
+                            <article>
+                                <strong>{{ $publication->titre }}</strong>
+                                <p>
+                                    @if ($publication->type)
+                                        {{ ucfirst($publication->type) }} ·
+                                    @endif
+                                    {{ $publication->annee }}
+                                </p>
+                                @if ($publication->doi)
+                                    <p>DOI: {{ $publication->doi }}</p>
+                                @endif
+                                @if ($publication->lien)
+                                    <a href="{{ $publication->lien }}" target="_blank" rel="noopener noreferrer">{{ __('messages.article_link') }}</a>
+                                @endif
+                            </article>
+                        @empty
+                            <p class="registration-empty">{{ $section['empty'] }}</p>
+                        @endforelse
+                    </div>
+                </details>
+            @endforeach
+        </aside>
+    </div>
+</section>
 
 @include('reinscription._reinscription_js')
 @endsection

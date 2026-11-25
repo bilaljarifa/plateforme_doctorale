@@ -1,3 +1,35 @@
+@import "./login.css";
+@import "./portal.css";
+@import "./publications.css";
+@import "./registration.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+    --doctoral-paper: #f4f6fc;
+    --doctoral-surface: #ffffff;
+    --doctoral-ink: #182543;
+    --doctoral-muted: #4b5a75;
+    --doctoral-blue: #163c91;
+    --doctoral-blue-deep: #050372;
+    --doctoral-border: #d9e1ef;
+    --doctoral-accent: #3869bc;
+    --doctoral-sans: "DM Sans", "Segoe UI", system-ui, sans-serif;
+    --doctoral-serif: "Instrument Serif", Georgia, serif;
+}
+
+.doctoral-auth :focus-visible,
+.doctoral-portal :focus-visible {
+    outline: 2px solid var(--doctoral-blue);
+    outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .doctoral-auth *,
+    .doctoral-portal * {
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}

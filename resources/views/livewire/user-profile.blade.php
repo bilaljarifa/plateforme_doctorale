@@ -1,71 +1,63 @@
-<div class="profile-container">
-    <div class="profile-header">
-        <h2 class="profile-title">Détails Profil</h2>
-    </div>
+<div class="portal-profile-content">
+    <p class="portal-profile-required"><span class="profile-required" aria-hidden="true">*</span> {{ __('messages.required_fields') }}</p>
 
     @if(session('success'))
-        <div class="alert alert-success mb-4">{{ session('success') }}</div>
+        <div class="alert alert-success" role="status">{{ session('success') }}</div>
     @endif
 
-    <form wire:submit.prevent="save" class="profile-form">
-        <div class="form-columns">
-            <!-- Colonne Gauche: Français -->
-            <div class="form-column">
-                <div class="form-group">
-                    <label>Nom <span class="required">*</span></label>
-                    <input type="text" wire:model="nom_fr" required class="form-input" />
-                </div>
+    @if($errors->any())
+        <div class="alert alert-danger" role="alert">
+            <ul class="mb-0">
+                @foreach ($errors->all() as $message)
+                    <li>{{ $message }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
-                <div class="form-group">
-                    <label>Prénom <span class="required">*</span></label>
-                    <input type="text" wire:model="prenom_fr" required class="form-input" />
+    <form wire:submit.prevent="save" class="portal-profile-form">
+        <fieldset class="portal-profile-card">
+            <legend>{{ __('messages.profile_details') }}</legend>
+            <div class="portal-profile-fields">
+                <div class="portal-field">
+                    <label for="profile-last-name">{{ __('messages.name') }} <span class="profile-required" aria-hidden="true">*</span></label>
+                    <input id="profile-last-name" type="text" wire:model="nom_fr" autocomplete="family-name" required>
                 </div>
-
-                <div class="form-group">
-                    <label>CIN || رقم البطاقة الوطنية <span class="required">*</span></label>
-                    <input type="text" wire:model="cin" required class="form-input" />
+                <div class="portal-field portal-field-ar">
+                    <label for="profile-last-name-ar"><span lang="ar" dir="rtl">الاسم العائلي</span> <span class="profile-required" aria-hidden="true">*</span></label>
+                    <input id="profile-last-name-ar" type="text" wire:model="nom_arabe" lang="ar" dir="rtl" required>
                 </div>
-
-                <div class="form-group">
-                    <label>CNE || الرقم الوطني للطالب  <span class="required">*</span></label>
-                    <input type="text" wire:model="cne" required class="form-input" />
+                <div class="portal-field">
+                    <label for="profile-first-name">{{ __('messages.first_name') }} <span class="profile-required" aria-hidden="true">*</span></label>
+                    <input id="profile-first-name" type="text" wire:model="prenom_fr" autocomplete="given-name" required>
                 </div>
-
-                <div class="form-group">
-                    <label>Date de naissance || تاريخ الميلاد <span class="required">*</span></label>
-                    <input type="date" wire:model="date_naissance" required class="form-input" />
+                <div class="portal-field portal-field-ar">
+                    <label for="profile-first-name-ar"><span lang="ar" dir="rtl">الاسم الشخصي</span> <span class="profile-required" aria-hidden="true">*</span></label>
+                    <input id="profile-first-name-ar" type="text" wire:model="prenom_arabe" lang="ar" dir="rtl" required>
                 </div>
-
-                <div class="form-group">
-                    <label>Téléphone || الرقم الاتصال <span class="required">*</span></label>
-                    <input type="tel" wire:model="telephone" required class="form-input" />
+                <div class="portal-field">
+                    <label for="profile-cin">CIN <span lang="ar" dir="rtl">رقم البطاقة الوطنية</span> <span class="profile-required" aria-hidden="true">*</span></label>
+                    <input id="profile-cin" type="text" wire:model="cin" required>
                 </div>
-            </div>
-
-            <!-- Colonne Droite: Arabe + Options -->
-            <div class="form-column">
-                <div class="form-group">
-                    <label>الإسم العائلي <span class="required">*</span></label>
-                    <input type="text" wire:model="nom_arabe" dir="rtl" required class="form-input" />
+                <div class="portal-field">
+                    <label for="profile-cne">CNE <span lang="ar" dir="rtl">الرقم الوطني للطالب</span> <span class="profile-required" aria-hidden="true">*</span></label>
+                    <input id="profile-cne" type="text" wire:model="cne" required>
                 </div>
-
-                <div class="form-group">
-                    <label> الإسم الشخصي<span class="required">*</span></label>
-                    <input type="text" wire:model="prenom_arabe" dir="rtl" required class="form-input" />
-                </div>
-
-                <div class="form-group">
-                    <label>Genre || الجنس <span class="required">*</span></label>
-                    <select wire:model="genre" required class="form-input">
+                <div class="portal-field">
+                    <label for="profile-gender">{{ __('messages.gender') }} <span lang="ar" dir="rtl">الجنس</span> <span class="profile-required" aria-hidden="true">*</span></label>
+                    <select id="profile-gender" wire:model="genre" required>
                         <option value="">Sélectionnez</option>
-                        <option value="Homme">Masculin</option>
-                        <option value="Femme">Féminin</option>
+                        <option value="Homme">{{ __('messages.male') }}</option>
+                        <option value="Femme">{{ __('messages.female') }}</option>
                     </select>
                 </div>
-
-                <div class="form-group">
-                    <label>Situation Familiale || الحالة العائلية <span class="required">*</span></label>
-                    <select wire:model="situation_familiale" required class="form-input">
+                <div class="portal-field">
+                    <label for="profile-birth-date">{{ __('messages.birth_date') }} <span lang="ar" dir="rtl">تاريخ الميلاد</span> <span class="profile-required" aria-hidden="true">*</span></label>
+                    <input id="profile-birth-date" type="date" wire:model="date_naissance" autocomplete="bday" required>
+                </div>
+                <div class="portal-field">
+                    <label for="profile-family-status">{{ __('messages.marital_status') }} <span lang="ar" dir="rtl">الحالة العائلية</span> <span class="profile-required" aria-hidden="true">*</span></label>
+                    <select id="profile-family-status" wire:model="situation_familiale" required>
                         <option value="">Sélectionnez</option>
                         <option value="Célibataire">Célibataire</option>
                         <option value="Marié(e)">Marié(e)</option>
@@ -73,176 +65,35 @@
                         <option value="Veuf(ve)">Veuf(ve)</option>
                     </select>
                 </div>
-
-                <div class="form-group">
-                    <label>Situation Administrative || الحالة المهنية  <span class="required">*</span></label>
-                    <select wire:model="situation_administrative" required class="form-input">
+                <div class="portal-field">
+                    <label for="profile-admin-status">{{ __('messages.admin_status') }} <span lang="ar" dir="rtl">الحالة المهنية</span> <span class="profile-required" aria-hidden="true">*</span></label>
+                    <select id="profile-admin-status" wire:model="situation_administrative" required>
                         <option value="">Sélectionnez</option>
                         <option value="Fonctionnaire">Fonctionnaire</option>
                         <option value="Salarié">Salarié</option>
                         <option value="Sans emploi">Sans emploi</option>
                     </select>
                 </div>
-
-                <div class="form-group">
-                    <label>ORCID || الرقم ORCID <span class="required">*</span></label>
-                    <input type="text" wire:model="orcid" required class="form-input" />
+                <div class="portal-field">
+                    <label for="profile-orcid">ORCID <span class="profile-required" aria-hidden="true">*</span></label>
+                    <input id="profile-orcid" type="text" wire:model="orcid" required>
+                </div>
+                <div class="portal-field">
+                    <label for="profile-phone">{{ __('messages.phone') }} <span lang="ar" dir="rtl">رقم الهاتف</span> <span class="profile-required" aria-hidden="true">*</span></label>
+                    <input id="profile-phone" type="tel" wire:model="telephone" autocomplete="tel" required>
+                </div>
+                <div class="portal-field">
+                    <label for="profile-email">{{ __('messages.email') }} <span lang="ar" dir="rtl">البريد الإلكتروني</span> <span class="profile-required" aria-hidden="true">*</span></label>
+                    <input id="profile-email" type="email" wire:model="email" autocomplete="email" required>
                 </div>
             </div>
-        </div>
+        </fieldset>
 
-        <!-- Email: Pleine largeur -->
-        <div class="form-full-width">
-            <label>E-mail || البريد الالكتروني <span class="required">*</span></label>
-            <input type="email" wire:model="email" required class="form-input" />
-        </div>
-
-        <!-- Bouton -->
-        <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Enregistrer</button>
+        <div class="portal-profile-actions">
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-check2" aria-hidden="true"></i>
+                {{ __('messages.save') }}
+            </button>
         </div>
     </form>
 </div>
-
-<style>
-.profile-container {
-    background: transparent;
-    padding: 0;
-    border-radius: 0;
-    max-width: 100%;
-    width: 100%;
-    margin: 0;
-}
-
-.profile-header {
-    margin-bottom: 1.5rem;
-    padding-bottom: 0.75rem;
-}
-
-.profile-title {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #1a202c;
-    margin: 0;
-}
-
-.alert {
-    padding: 0.75rem 1rem;
-    border-radius: 6px;
-    margin-bottom: 1rem;
-    font-size: 14px;
-}
-
-.alert-success {
-    background-color: #d4edda;
-    border: 1px solid #c3e6cb;
-    color: #155724;
-}
-
-.profile-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-}
-
-.form-columns {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-}
-
-.form-column {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-}
-
-.form-group label {
-    font-size: 13px;
-    font-weight: 500;
-    color: #4a5568;
-}
-
-.required {
-    color: #dc2626;
-}
-
-.form-input {
-    border: 1px solid #e0e6ed;
-    border-radius: 6px;
-    padding: 0.8rem 1rem;
-    font-size: 15px;
-    background: white;
-    transition: all 0.2s ease;
-    width: 100%;
-}
-
-.form-input:focus {
-    outline: none;
-    border-color: #0066cc;
-    box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
-}
-
-.form-full-width {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-    margin-top: 0.5rem;
-}
-
-.form-full-width label {
-    font-size: 13px;
-    font-weight: 500;
-    color: #4a5568;
-}
-
-.form-full-width .form-input {
-    width: 100%;
-}
-
-.form-actions {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px solid #e0e6ed;
-}
-
-.btn {
-    padding: 0.6rem 1.5rem;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 500;
-    border: none;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.btn-primary {
-    background: linear-gradient(135deg, #0066cc 0%, #0052a3 100%);
-    color: white;
-}
-
-.btn-primary:hover {
-    background: linear-gradient(135deg, #0052a3 0%, #003d7a 100%);
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(0, 102, 204, 0.3);
-}
-
-@media (max-width: 768px) {
-    .form-columns {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
-
-    .profile-container {
-        padding: 1rem;
-    }
-}
-</style>

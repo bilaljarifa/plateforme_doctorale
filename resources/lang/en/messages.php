@@ -2,6 +2,10 @@
 
 return [
     // Navigation
+    'doctoral_student' => 'Doctoral student',
+    'doctoral_space' => 'Doctoral portal',
+    'language' => 'Language',
+    'profile_details' => 'Profile details',
     'dashboard' => 'Dashboard',
     'my_thesis' => 'Thesis',
     'my_articles' => 'Articles',

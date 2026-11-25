@@ -2,6 +2,10 @@
 
 return [
     // Navigation
+    'doctoral_student' => 'طالب الدكتوراه',
+    'doctoral_space' => 'فضاء الدكتوراه',
+    'language' => 'اللغة',
+    'profile_details' => 'تفاصيل الملف الشخصي',
     'dashboard' => 'لوحة القيادة',
     'my_thesis' => 'الأطروحة',
     'my_articles' => 'المقالات',

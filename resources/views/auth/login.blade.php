@@ -1,114 +1,58 @@
 @extends('layouts.auth')
 
+@section('title', 'Connexion · Plateforme Doctorale')
+
 @section('content')
-<div class="min-h-screen flex flex-col md:flex-row animate-fade-in font-sans">
+<div class="doctoral-login">
+    <main class="login-panel" aria-labelledby="login-title">
+        <div class="login-content">
+            <img class="login-brand" src="{{ asset('images/ibn-tofail-logo-horizontal.png') }}"
+                alt="جامعة ابن طفيل — Ibn Tofaïl University" width="686" height="278">
 
-    <style>
-        @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slide-up { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        @keyframes pulse-soft { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
-        @keyframes gradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-
-        .animate-fade-in { animation: fade-in 0.8s ease-out; }
-        .animate-slide-up { animation: slide-up 0.7s ease-out; }
-        .animate-pulse-soft { animation: pulse-soft 3s infinite; }
-        .gradient-animate { background-size: 200% 200%; animation: gradient 15s ease infinite; }
-    </style>
-
-    <!-- LEFT COLUMN -->
-    <div class="md:w-1/2 w-full bg-white flex flex-col justify-center p-10 sm:p-16 space-y-8 animate-slide-up">
-
-        <!-- Error Message -->
-        @if(session('error'))
-            <div class="bg-red-50 border-l-4 border-red-400 p-4 mb-4">
-                <p class="text-red-700 text-sm">{{ session('error') }}</p>
+            <div class="login-welcome">
+                <h1 id="login-title">Bienvenue sur la plateforme de suivi de candidature en <strong>cycle doctoral</strong> au titre de l’année universitaire <bdi>2025–2026</bdi>.</h1>
+                <p lang="ar" dir="rtl">مرحبًا بكم في منصة تتبع الترشيح <strong>لسلك الدكتوراه</strong> برسم السنة الجامعية <bdi dir="ltr">2025–2026</bdi>.</p>
             </div>
-        @endif
 
-        <!-- University Logo -->
-        <div class="text-center">
-            <h1 class="text-5xl font-bold text-blue-900 mb-2 animate-pulse-soft">UIT</h1>
-            <p class="text-gray-700 text-lg">Université Ibn Tofail</p>
-            <p class="text-gray-700 text-lg" dir="rtl">جامعة ابن طفيل</p>
+            <div class="login-guidance">
+                <p>La connexion via le compte Gmail personnel du <strong>candidat</strong> est obligatoire.</p>
+                <p lang="ar" dir="rtl">تسجيل الدخول بالبريد الإلكتروني الشخصي <strong>للمترشح</strong> إلزامي.</p>
+            </div>
+
+            @if(session('error'))
+                <div class="login-alert" role="alert">{{ session('error') }}</div>
+            @endif
+
+            @if(session('success'))
+                <div class="login-alert login-alert-success" role="status">{{ session('success') }}</div>
+            @endif
+
+            <a class="login-google" href="{{ route('google.login') }}">
+                <svg aria-hidden="true" width="22" height="22" viewBox="0 0 48 48">
+                    <path fill="#4285F4" d="M43.61 24.46c0-1.36-.12-2.67-.35-3.92H24v7.42h11a9.4 9.4 0 0 1-4.08 6.17v5.14h6.61c3.87-3.57 6.08-8.83 6.08-14.81Z"/>
+                    <path fill="#34A853" d="M24 44c5.51 0 10.13-1.83 13.5-4.73l-6.61-5.14c-1.83 1.23-4.17 1.96-6.89 1.96-5.33 0-9.85-3.6-11.47-8.44H5.71v5.3A20 20 0 0 0 24 44Z"/>
+                    <path fill="#FBBC05" d="M12.53 27.65a12.04 12.04 0 0 1 0-7.3v-5.3H5.71a20 20 0 0 0 0 17.9l6.82-5.3Z"/>
+                    <path fill="#EA4335" d="M24 11.91c3 0 5.69 1.03 7.81 3.05l5.85-5.85C34.13 5.82 29.51 4 24 4A20 20 0 0 0 5.71 15.05l6.82 5.3C14.15 15.51 18.67 11.91 24 11.91Z"/>
+                </svg>
+                <span>Connexion avec Google</span>
+            </a>
+
+            <footer class="login-footer">
+                <span>Besoin d’aide&nbsp;?</span>
+                <a href="mailto:support@uit.ac.ma">support@uit.ac.ma</a>
+                <span lang="ar" dir="rtl">للمساعدة راسلونا عبر البريد الإلكتروني</span>
+            </footer>
         </div>
+    </main>
 
-        <!-- Title -->
-        <div class="text-center max-w-lg mx-auto">
-            <h2 class="text-3xl font-bold text-blue-800 mb-2">
-                Cycle Doctoral 2025-2026
-            </h2>
-            <h3 class="text-2xl font-bold text-blue-700 mb-6" dir="rtl">
-                دكتوراه 2025-2026
-            </h3>
-
-            <!-- Welcome Message -->
-            <div class="mb-6">
-                <p class="text-gray-700 text-sm leading-relaxed mb-2">
-                    Bienvenue sur la plateforme de suivi de candidature en 
-                    <span class="text-blue-600 font-medium">cycle doctoral</span> au titre de l'année universitaire 2025-2026
-                </p>
-                <p class="text-gray-700 text-sm leading-relaxed" dir="rtl">
-                    مرحبا بكم في منصة تتبع الترشيح 
-                    <span class="text-blue-600 font-medium">لسلك الدكتوراه</span> 
-                    برسم السنة الجامعية 2026-2025
-                </p>
-            </div>
-
-            <!-- Info Box -->
-            <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6 text-left">
-                <p class="text-gray-700 text-sm mb-1">
-                    La connexion via gmail personnel du <span class="text-blue-600 font-medium">candidat</span> est obligatoire.
-                </p>
-                <p class="text-gray-700 text-sm" dir="rtl">
-                    تسجيل الدخول إلى البريد الإلكتروني الشخصي لـ<span class="text-blue-600 font-medium">المترشح</span> يعد إلزامي.
-                </p>
-            </div>
-
-            <!-- Google Login -->
-            <div class="mb-6">
-                <a href="{{ route('google.login') }}"
-                   class="group inline-flex items-center justify-center gap-3 px-6 py-3 rounded-lg border border-gray-300 bg-white hover:bg-gray-50 hover:shadow-md transition-all duration-300">
-                    <svg class="h-5 w-5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path fill="#4285F4"
-                              d="M12.24 10.285V14.4h6.806c-.275 1.765-2.056 5.174-6.806 5.174-4.095 0-7.439-3.389-7.439-7.574s3.345-7.574 7.439-7.574c2.33 0 3.891.989 4.785 1.849l3.254-3.138C18.189 1.186 15.479 0 12.24 0c-6.635 0-12 5.365-12 12s5.365 12 12 12c6.926 0 11.52-4.869 11.52-11.726 0-.788-.085-1.39-.189-1.989H12.24z" />
-                    </svg>
-                    <span class="text-base font-medium text-gray-700">
-                        Connexion avec Google
-                    </span>
-                </a>
-            </div>
-
-            <!-- Support -->
-            <div>
-                <p class="text-sm text-gray-600">
-                    Besoin d'aide ?
-                    <a href="mailto:support@uit.ac.ma" class="text-blue-600 hover:underline">
-                        support@uit.ac.ma
-                    </a>
-                </p>
-            </div>
+    <aside class="login-visual" aria-label="Année universitaire">
+        <img class="login-emblem" src="{{ asset('images/ibn-tofail-emblem.png') }}"
+            alt="" width="600" height="1371">
+        <div class="login-academic-year">
+            <span lang="ar" dir="rtl">الموسم الجامعي</span>
+            <span>2025 / 2026</span>
         </div>
-    </div>
-
-    <!-- RIGHT COLUMN -->
-    <div class="md:w-1/2 hidden md:flex flex-col justify-center items-center text-white bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 gradient-animate relative overflow-hidden">
-
-        <!-- Decorative Circles -->
-        <div class="absolute top-10 left-10 w-24 h-24 bg-white opacity-10 rounded-full animate-pulse-soft"></div>
-        <div class="absolute bottom-10 right-10 w-32 h-32 bg-white opacity-10 rounded-full animate-pulse-soft"></div>
-
-        <!-- Text Section -->
-        <div class="z-10 text-center px-6">
-            <h2 class="text-3xl font-bold mb-4" dir="rtl">الموسم الجامعي</h2>
-            <p class="text-2xl font-light mb-10">2025 - 2026</p>
-
-            <div class="space-y-4">
-                <h3 class="text-5xl font-extrabold tracking-tight">Innovate,</h3>
-                <h3 class="text-5xl font-extrabold tracking-tight">Inspire,</h3>
-                <h3 class="text-5xl font-extrabold tracking-tight">Excel.</h3>
-            </div>
-        </div>
-    </div>
-
+        <p class="login-visual-title" lang="en">Innovate,<br>Inspire,<br>Excel.</p>
+    </aside>
 </div>
 @endsection

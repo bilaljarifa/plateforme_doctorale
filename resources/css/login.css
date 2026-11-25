@@ -1,99 +1,226 @@
-/* .login-container {
-    @apply min-h-screen flex;
+.doctoral-auth {
+    margin: 0;
+    background: white;
+    color: var(--doctoral-ink);
+    font-family: var(--doctoral-sans);
+    -webkit-font-smoothing: antialiased;
 }
 
-.login-left {
-    @apply w-1/2 bg-white flex flex-col items-center justify-between p-12;
+.doctoral-login {
+    display: grid;
+    grid-template-columns: minmax(0, 1.04fr) minmax(0, 0.96fr);
+    min-height: 100svh;
 }
 
-.login-right {
-    @apply w-1/2 bg-[#1a365d] p-12 flex flex-col justify-between relative overflow-hidden;
+.login-panel {
+    display: grid;
+    place-items: center;
+    min-width: 0;
+    padding: clamp(28px, 6vh, 76px) clamp(20px, 4.1vw, 78px);
 }
 
-.uit-logo {
-    @apply w-auto h-24 mb-8;
+.login-content {
+    width: min(100%, 805px);
+    text-align: center;
 }
 
-.welcome-text {
-    @apply text-center space-y-4 mb-8;
+.login-brand {
+    display: block;
+    width: clamp(190px, 20vw, 344px);
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto clamp(28px, 7vh, 76px);
 }
 
-.welcome-text-fr {
-    @apply text-2xl font-bold text-gray-900;
+.doctoral-auth [lang="ar"] {
+    font-family: "Noto Sans Arabic", var(--doctoral-sans);
 }
 
-.welcome-text-ar {
-    @apply text-2xl font-bold text-gray-800 mt-2;
+.login-welcome {
+    display: grid;
+    gap: 4px;
+    margin-bottom: clamp(18px, 2vw, 31px);
+    font-size: clamp(16px, 1.45vw, 26px);
+    font-weight: 700;
+    line-height: 1.47;
 }
 
-.instruction-box {
-    @apply bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8;
+.login-welcome h1,
+.login-welcome p,
+.login-guidance p {
+    margin: 0;
+    font: inherit;
 }
 
-.instruction-text {
-    @apply text-gray-700 text-base mb-3;
+.login-welcome strong,
+.login-guidance strong {
+    color: #254fba;
 }
 
-.instruction-text-ar {
-    @apply text-gray-700 text-base text-right;
+.login-guidance {
+    display: grid;
+    gap: 3px;
+    margin-bottom: 22px;
+    color: var(--doctoral-muted);
+    font-size: clamp(13px, 1.05vw, 17px);
+    line-height: 1.6;
 }
 
-.google-button {
-    @apply w-full flex items-center justify-center px-6 py-4 border-2 border-blue-600
-           rounded-lg shadow-sm bg-white hover:bg-gray-50 transition-all duration-300
-           transform hover:-translate-y-1;
+.login-google {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 49px;
+    padding: 10px 20px;
+    border: 2px solid #2362e5;
+    border-radius: 999px;
+    background: white;
+    color: #152545;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 160ms ease, box-shadow 160ms ease;
 }
 
-.google-icon {
-    @apply w-6 h-6 mr-4;
+.login-google svg {
+    flex: 0 0 auto;
 }
 
-.button-text {
-    @apply text-gray-800 text-lg font-medium;
+.login-google:hover {
+    background: #f0f5ff;
+    color: #153a80;
+    box-shadow: 0 4px 12px rgba(25, 67, 148, 0.12);
 }
 
-.help-text {
-    @apply text-center text-sm text-gray-600 mt-8;
+.login-google:focus-visible {
+    outline: 2px solid #2362e5;
+    outline-offset: 4px;
 }
 
-.help-link {
-    @apply text-blue-600 hover:text-blue-800 underline;
+.login-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: center;
+    gap: 4px 7px;
+    margin-top: clamp(18px, 2.2vw, 34px);
+    color: var(--doctoral-muted);
+    font-size: 13px;
 }
 
-.right-top-text {
-    @apply text-white text-right mb-12 relative z-10;
+.login-footer a {
+    color: #163c91;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 3px;
 }
 
-.academic-year-ar {
-    @apply text-3xl font-bold mb-2;
+.login-alert {
+    margin: 0 auto 14px;
+    padding: 9px 13px;
+    border: 1px solid #e7bfaf;
+    border-radius: 8px;
+    background: #fff4ef;
+    color: #793a2c;
+    font-size: 14px;
+    overflow-wrap: anywhere;
 }
 
-.year-number {
-    @apply text-2xl font-light;
+.login-alert-success {
+    border-color: #b5d5c5;
+    background: #eaf4ed;
+    color: #276447;
 }
 
-.main-text {
-    @apply text-white relative z-10 space-y-6;
+.login-visual {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-width: 0;
+    min-height: 550px;
+    overflow: hidden;
+    margin-inline-start: -4%;
+    padding: clamp(22px, 3vw, 52px) clamp(24px, 4vw, 70px);
+    clip-path: polygon(10% 0, 100% 0, 100% 100%, 0 100%);
+    background: #1649b8;
+    color: white;
 }
 
-.main-text-item {
-    @apply text-5xl font-bold tracking-wide;
+.login-academic-year {
+    display: grid;
+    align-self: flex-start;
+    gap: 3px;
+    margin-inline-start: 7%;
+    padding-inline-start: 13px;
+    border-inline-start: 4px solid #dce8ff;
+    font-size: clamp(16px, 1.95vw, 36px);
+    font-weight: 700;
+    line-height: 1.3;
 }
 
-.decorative-pattern {
-    @apply absolute inset-0 opacity-10;
+.login-academic-year [lang="ar"] {
+    justify-self: start;
+    font-size: 0.8em;
 }
 
-.pattern-animation {
-    animation: float 20s ease-in-out infinite;
-    transform-origin: center;
+.login-visual-title {
+    max-width: 10ch;
+    margin: 0 0 0 2%;
+    font-size: clamp(51px, 5.3vw, 102px);
+    font-weight: 700;
+    letter-spacing: -0.055em;
+    line-height: 0.99;
 }
 
-@keyframes float {
-    0%, 100% {
-        transform: translateY(0) rotate(0deg);
+.login-emblem {
+    position: absolute;
+    z-index: -1;
+    inset-block-start: 3%;
+    inset-inline-end: clamp(12px, 2.15vw, 42px);
+    width: auto;
+    height: 94%;
+    max-width: 48%;
+    object-fit: contain;
+    object-position: right center;
+    filter: brightness(0) invert(1) drop-shadow(clamp(-74px, -4.6vw, -20px) 0 0 rgb(255 255 255 / 28%));
+    pointer-events: none;
+}
+
+@media (max-width: 850px) {
+    .doctoral-login {
+        grid-template-columns: minmax(0, 1fr);
     }
-    50% {
-        transform: translateY(-30px) rotate(5deg);
+
+    .login-panel {
+        padding-block: clamp(27px, 7vw, 54px) 35px;
     }
-} */
+
+    .login-brand {
+        width: clamp(184px, 52vw, 256px);
+        margin-bottom: 28px;
+    }
+
+    .login-visual {
+        gap: 38px;
+        min-height: 270px;
+        margin-inline-start: 0;
+        padding: 22px 26px;
+        clip-path: none;
+    }
+
+    .login-academic-year,
+    .login-visual-title {
+        margin-inline-start: 0;
+    }
+
+    .login-visual-title {
+        font-size: clamp(45px, 10vw, 67px);
+    }
+
+    .login-emblem {
+        max-width: 38%;
+    }
+}
